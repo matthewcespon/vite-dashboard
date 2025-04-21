@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TrendingUp, TrendingDown, FileText, Download, Eye } from 'lucide-react';
+import { FileText, Download, Eye } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import Banner from '../../components/Banner/Banner';
 import Button from '../../components/Button/Button';
-import Metrics from '../../components/Metrics/Metrics';
+import EnergySavingsMetrics from '../../components/EnergySavingsMetrics/EnergySavingsMetrics';
 import styles from './Dashboard.module.css';
 
 const Dashboard: React.FC = () => {
@@ -12,6 +12,9 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('all');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  
+  // Add your actual API key here
+  const EIA_API_KEY = "Bmm5PXdfBbzs9HJXUihhhRog11lDdwPpUEUO3k0d"; 
   
   useEffect(() => {
     // Check if the user is authenticated
@@ -103,36 +106,6 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const metricsData = [
-    {
-      name: 'Total Energy Consumption',
-      value: '45,892 kWh',
-      change: {
-        value: '+2.4% from last month',
-        isPositive: false,
-        icon: <TrendingUp size={16} />
-      }
-    },
-    {
-      name: 'Average Daily Usage',
-      value: '1,532 kWh',
-      change: {
-        value: '-5.1% from last month',
-        isPositive: true,
-        icon: <TrendingDown size={16} />
-      }
-    },
-    {
-      name: 'Efficiency Score',
-      value: '82/100',
-      change: {
-        value: '+3.8 points',
-        isPositive: true,
-        icon: <TrendingUp size={16} />
-      }
-    }
-  ];
-
   return (
     <div className={styles.container}>
       {showSuccessMessage && (
@@ -148,7 +121,7 @@ const Dashboard: React.FC = () => {
           <h1 className={styles.greeting}>Hello, {user.name}</h1>
           <p className={styles.subtitle}>Welcome to your Energy Insights Dashboard</p>
           
-          <Metrics metrics={metricsData} />
+          <EnergySavingsMetrics apiKey={EIA_API_KEY} />
         </div>
       </div>
       
