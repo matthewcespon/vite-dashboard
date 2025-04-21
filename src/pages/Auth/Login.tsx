@@ -63,20 +63,22 @@ const Login: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        {loginError && (
-          <Banner 
-            type="error" 
-            message={loginError} 
-            onClose={() => setLoginError(null)} 
-          />
-        )}
-        {loginSuccess && (
-          <Banner 
-            type="success" 
-            message="Login successful! Redirecting to dashboard..." 
-            onClose={() => setLoginSuccess(false)}
-          />
-        )}
+        <div className={styles.bannerContainer}>
+          {loginError && (
+            <Banner 
+              type="error" 
+              message={loginError} 
+              onClose={() => setLoginError(null)} 
+            />
+          )}
+          {loginSuccess && (
+            <Banner 
+              type="success" 
+              message="Login successful! Redirecting to dashboard..." 
+              onClose={() => setLoginSuccess(false)}
+            />
+          )}
+        </div>
         
         <div className={styles.header}>
           <div className={styles.logo}>

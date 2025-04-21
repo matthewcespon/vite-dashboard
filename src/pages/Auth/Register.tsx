@@ -70,20 +70,22 @@ const Register: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        {registerError && (
-          <Banner 
-            type="error" 
-            message={registerError} 
-            onClose={() => setRegisterError(null)} 
-          />
-        )}
-        {registerSuccess && (
-          <Banner 
-            type="success" 
-            message="Registration successful! Redirecting to dashboard..." 
-            onClose={() => setRegisterSuccess(false)}
-          />
-        )}
+        <div className={styles.bannerContainer}>
+          {registerError && (
+            <Banner 
+              type="error" 
+              message={registerError} 
+              onClose={() => setRegisterError(null)} 
+            />
+          )}
+          {registerSuccess && (
+            <Banner 
+              type="success" 
+              message="Registration successful! Redirecting to dashboard..." 
+              onClose={() => setRegisterSuccess(false)}
+            />
+          )}
+        </div>
         
         <div className={styles.header}>
           <div className={styles.logo}>

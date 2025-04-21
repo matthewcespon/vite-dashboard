@@ -45,7 +45,6 @@ const Navbar: React.FC = () => {
           Pricing
         </Link>
         
-        <div className={styles.authLinks}>
           {user ? (
             <>
               <Link 
@@ -83,7 +82,6 @@ const Navbar: React.FC = () => {
               </Link>
             </>
           )}
-        </div>
       </nav>
     </header>
   );

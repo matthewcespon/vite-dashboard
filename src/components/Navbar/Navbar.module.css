@@ -1,107 +1,121 @@
 .navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 72px;
-  padding: 0 2rem;
+  height: 4rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9);
   z-index: 1000;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  position: relative; /* Changed from fixed to relative */
 }
 
-.scrolled {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+@media (min-width: 1024px) {
+  .navbar {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #0A2463;
+  justify-content: center;
   text-decoration: none;
+  color: inherit;
 }
 
 .logoIcon {
-  color: #3E92CC;
+  height: 1.5rem;
+  width: 1.5rem;
+  color: var(--blue-600, #3E92CC);
+}
+
+.logo span {
+  margin-left: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
 }
 
 .nav {
+  margin-left: auto;
   display: flex;
+  gap: 1rem;
   align-items: center;
-  gap: 2rem;
+}
+
+@media (min-width: 640px) {
+  .nav {
+    gap: 1.5rem;
+  }
 }
 
 .navLink {
+  font-size: 0.875rem;
   font-weight: 500;
-  color: #0A2463;
   text-decoration: none;
-  position: relative;
-  padding: 0.5rem 0;
-  transition: color 0.3s ease;
+  color: var(--text-color, #0A2463);
+  position: relative; /* Added for positioning the underline */
+  display: inline-block; /* Changed from default to inline-block */
+  padding-bottom: 2px; /* Space for underline */
 }
 
 .navLink:hover {
-  color: #3E92CC;
+  color: var(--blue-600, #3E92CC);
 }
 
+/* Removed the previous ::after and replaced with a new implementation */
 .navLink::after {
   content: '';
   position: absolute;
-  bottom: 0;
   left: 0;
-  width: 0;
-  height: 2px;
-  background-color: #3E92CC;
-  transition: width 0.3s ease;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--blue-600, #3E92CC);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
 }
 
 .navLink:hover::after {
-  width: 100%;
-}
-
-.authLinks {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  transform: scaleX(1);
 }
 
 .loginButton {
-  background: transparent;
-  border: 1px solid #3E92CC;
-  color: #3E92CC;
-  padding: 0.5rem 1.25rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  display: inline-block;
+  background-color: transparent;
+  color: var(--blue-600, #3E92CC);
   font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--blue-600, #3E92CC);
+  font-size: 0.875rem;
+  transition: background-color 0.2s, color 0.2s;
+  text-decoration: none;
+  text-align: center;
 }
 
 .loginButton:hover {
-  background: rgba(62, 146, 204, 0.1);
+  background-color: var(--blue-100, rgba(62, 146, 204, 0.1));
 }
 
 .signupButton {
-  background: #3E92CC;
-  border: none;
+  display: inline-block;
+  background-color: var(--blue-600, #3E92CC);
   color: white;
-  padding: 0.5rem 1.25rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
   font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--blue-600, #3E92CC);
+  font-size: 0.875rem;
+  transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  text-align: center;
 }
 
 .signupButton:hover {
-  background: #3580b1;
+  background-color: var(--blue-700, #3580b1);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(62, 146, 204, 0.2);
 }
@@ -114,8 +128,10 @@
   gap: 0.5rem;
   cursor: pointer;
   padding: 0.5rem;
-  border-radius: 4px;
+  border-radius: 0.375rem;
   transition: all 0.3s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .profileButton:hover {
@@ -141,6 +157,7 @@
   cursor: pointer;
   padding: 0.5rem;
   color: #0A2463;
+  margin-left: auto; /* Align to the right */
 }
 
 @media (max-width: 768px) {
@@ -149,8 +166,8 @@
   }
   
   .nav {
-    position: fixed;
-    top: 72px;
+    position: absolute; /* Changed from fixed to absolute */
+    top: 4rem;
     left: 0;
     right: 0;
     background: white;
@@ -161,7 +178,7 @@
     opacity: 0;
     transition: all 0.3s ease;
     pointer-events: none;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    z-index: 999;
   }
   
   .navOpen {
@@ -170,9 +187,13 @@
     pointer-events: all;
   }
   
-  .authLinks {
-    flex-direction: column;
+  .navLink {
     width: 100%;
+    padding: 0.5rem 0;
+  }
+  
+  .navLink::after {
+    bottom: 0;
   }
   
   .loginButton, .signupButton {
