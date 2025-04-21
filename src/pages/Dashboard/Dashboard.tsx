@@ -5,6 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Banner from '../../components/Banner/Banner';
 import Button from '../../components/Button/Button';
 import EnergySavingsMetrics from '../../components/EnergySavingsMetrics/EnergySavingsMetrics';
+import EnergyChart from '../../components/EnergyChart/EnergyChart';
 import styles from './Dashboard.module.css';
 
 const Dashboard: React.FC = () => {
@@ -127,15 +128,7 @@ const Dashboard: React.FC = () => {
       
       <div className={styles.content}>
         <div className={styles.chartContainer}>
-          <div className={styles.chartHeader}>
-            <h2 className={styles.sectionTitle}>Energy Consumption Trends</h2>
-            <div>
-              <Button variant="outline" size="small">
-                Last 30 Days
-              </Button>
-            </div>
-          </div>
-          <div className={styles.loadingPlaceholder}></div>
+          <EnergyChart title="Energy Consumption Trends" />
         </div>
         
         <div>
