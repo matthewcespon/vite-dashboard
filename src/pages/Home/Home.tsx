@@ -12,6 +12,7 @@ import {
 import { useAuth } from "../../contexts/AuthContext";
 import styles from "./Home.module.css";
 import layoutStyles from "../../layout.module.css";
+import Button from "../../components/Button/Button";
 
 const Home: React.FC = () => {
   const { user } = useAuth();
@@ -48,25 +49,18 @@ const Home: React.FC = () => {
                   </p>
                 </div>
                 <div className={styles.buttonContainer}>
-                  <button
+                  <Button
                     className={styles.primaryButton}
                     onClick={handleGetStarted}
                   >
                     Get Started
-                  </button>
+                  </Button>
                 </div>
               </div>
               <div
                 className={`${layoutStyles.flexCol} ${layoutStyles.itemsCenter} ${layoutStyles.justifyCenter}`}
               >
                 <div className={styles.imageContainer}>
-                  {/* <Image
-                    src="/placeholder.svg?height=500&width=600"
-                    alt="Energy Dashboard"
-                    fill
-                    className="object-contain"
-                    priority
-                  /> */}
                 </div>
               </div>
             </div>
