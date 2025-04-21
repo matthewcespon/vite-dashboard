@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { api } from '../../utils/api';
 import styles from './Reports.module.css';
+import Footer from '../../components/Footer/Footer';
 
 interface DateRange {
   start: string;
@@ -234,6 +235,8 @@ const Reports: React.FC = () => {
           </div>
         )}
       </div>
+
+      <Footer />
     </div>
   );
 };

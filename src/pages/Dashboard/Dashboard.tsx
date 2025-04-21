@@ -7,6 +7,7 @@ import Button from '../../components/Button/Button';
 import EnergySavingsMetrics from '../../components/EnergySavingsMetrics/EnergySavingsMetrics';
 import EnergyChart from '../../components/EnergyChart/EnergyChart';
 import styles from './Dashboard.module.css';
+import Footer from '../../components/Footer/Footer';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
@@ -208,6 +209,7 @@ const Dashboard: React.FC = () => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

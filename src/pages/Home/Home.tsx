@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   BarChart3,
   Zap,
@@ -10,6 +10,7 @@ import styles from "./Home.module.css";
 import layoutStyles from "../../layout.module.css";
 import Button from "../../components/Button/Button";
 import heroStyles from "./hero.module.css";
+import Footer from "../../components/Footer/Footer";
 
 const Home: React.FC = () => {
   const { user } = useAuth();
@@ -122,19 +123,8 @@ const Home: React.FC = () => {
           </div>
         </section>
       </main>
-      <footer className={styles.footer}>
-        <p className={styles.footerText}>
-          © {new Date().getFullYear()} EnergyIQ. All rights reserved.
-        </p>
-        <nav className={styles.footerNav}>
-          <Link className={styles.footerLink} to="#">
-            Terms of Service
-          </Link>
-          <Link className={styles.footerLink} to="#">
-            Privacy
-          </Link>
-        </nav>
-      </footer>
+      <Footer/>
+      
     </div>
   );
 };
