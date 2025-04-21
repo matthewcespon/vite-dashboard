@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown } from 'lucide-react';
+import { Select, Option, FormControl, FormLabel } from '@mui/joy';
 import Metrics from '../Metrics/Metrics';
 import styles from './EnergySavingsMetrics.module.css';
 
@@ -151,29 +152,44 @@ const EnergySavingsMetrics: React.FC<EnergySavingsMetricsProps> = ({ apiKey }) =
   return (
     <>
       <div className={styles.controls}>
-        <select 
-          className={styles.stateSelector}
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-        >
-          {US_STATES.map((state) => (
-            <option key={state.code} value={state.code}>
-              {state.name}
-            </option>
-          ))}
-        </select>
+        <FormControl size="sm">
+          <div
+            className={styles.label}
+          >State</div>
+          <Select
+            value={state}
+            onChange={(_, newValue) => setState(newValue as string)}
+            size="sm"
+            sx={{ minWidth: 180 }}
+            variant="plain"
+          >
+            {US_STATES.map((stateOption) => (
+              <Option key={stateOption.code} value={stateOption.code}>
+                {stateOption.name}
+              </Option>
+            ))}
+          </Select>
+        </FormControl>
         
-        <select 
-          className={styles.yearSelector}
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-        >
-          {years.map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
+        <FormControl size="sm">
+          <div
+            className={styles.label}
+          >Year</div>
+          <Select
+            color="neutral"
+            value={year}
+            onChange={(_, newValue) => setYear(newValue as string)}
+            size="sm"
+            sx={{ minWidth: 120 }}
+            variant="plain"
+          >
+            {years.map((yearOption) => (
+              <Option key={yearOption} value={yearOption}>
+                {yearOption}
+              </Option>
+            ))}
+          </Select>
+        </FormControl>
       </div>
       
       {loading ? (
