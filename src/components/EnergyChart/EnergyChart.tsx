@@ -148,7 +148,7 @@ const EnergyChart: React.FC<EnergyChartProps> = ({ title = 'Energy Consumption T
         boxPadding: 4,
         titleFont: {
           size: 13,
-          weight: '600',
+          weight: 'normal',
           family: "'Inter', sans-serif"
         },
         bodyFont: {

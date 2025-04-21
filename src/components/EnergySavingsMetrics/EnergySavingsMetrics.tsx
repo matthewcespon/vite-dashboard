@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TrendingUp, TrendingDown } from 'lucide-react';
-import { Select, Option, FormControl, FormLabel } from '@mui/joy';
+import { Select, Option, FormControl } from '@mui/joy';
 import Metrics from '../Metrics/Metrics';
 import styles from './EnergySavingsMetrics.module.css';
 

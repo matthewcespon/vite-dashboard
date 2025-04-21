@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
 import { api } from '../../utils/api';
 import styles from './Reports.module.css';
 
@@ -60,7 +59,6 @@ interface CachedReportsData {
 }
 
 const Reports: React.FC = () => {
-  const { user } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
   const [reports, setReports] = useState<Report[]>([]);

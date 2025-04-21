@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Zap, User, Mail, Lock } from 'lucide-react';
+import { Zap } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../../components/Button/Button';
 import Banner from '../../components/Banner/Banner';
