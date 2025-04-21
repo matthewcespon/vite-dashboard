@@ -6,6 +6,8 @@ import Home from './pages/Home/Home';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import Dashboard from './pages/Dashboard/Dashboard';
+import Insights from './pages/Insights/Insights';
+import Reports from './pages/Reports/Reports';
 import NotFound from './pages/NotFound/NotFound';
 import './index.css';
 
@@ -38,6 +40,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/reports" 
+            element={
+              <ProtectedRoute>
+                <Reports />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/insights" 
+            element={
+              <ProtectedRoute>
+                <Insights />
               </ProtectedRoute>
             } 
           />
