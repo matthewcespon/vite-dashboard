@@ -1,271 +1,269 @@
-.container {
-  padding-top: 72px;
-  overflow-x: hidden;
+.heroSection {
+  width: 100%;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
-.hero {
-  min-height: calc(100vh - 72px);
+@media (min-width: 768px) {
+  .heroSection {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heroSection {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .heroSection {
+    padding-top: 12rem;
+    padding-bottom: 12rem;
+  }
+}
+
+.heroTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 640px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .heroTitle {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+}
+
+.heroSubtext {
+  max-width: 600px;
+  color: var(--gray-500);
+}
+
+@media (min-width: 768px) {
+  .heroSubtext {
+    font-size: 1.25rem;
+  }
+}
+
+.buttonContainer {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (min-width: 400px) {
+  .buttonContainer {
+    flex-direction: row;
+  }
+}
+
+.primaryButton {
+  background-color: var(--blue-600);
+  color: white;
+  font-weight: 500;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.375rem;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
-  text-align: center;
-  overflow: hidden;
+  border: 1px solid var(--blue-600);
 }
 
-.heroBackground {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4ecfb 100%);
-  overflow: hidden;
+.primaryButton:hover {
+  background-color: var(--blue-700);
 }
 
-.shape {
-  position: absolute;
-  background: rgba(62, 146, 204, 0.1);
-  border-radius: 50%;
+.secondaryButton {
+  background-color: transparent;
+  color: var(--foreground);
+  font-weight: 500;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--border-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.shape1 {
-  width: 400px;
-  height: 400px;
-  top: -100px;
-  right: -100px;
+.secondaryButton:hover {
+  background-color: var(--gray-100);
 }
 
-.shape2 {
-  width: 300px;
+.buttonIcon {
+  margin-left: 0.5rem;
+  height: 1rem;
+  width: 1rem;
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
   height: 300px;
-  bottom: -50px;
-  left: -50px;
 }
 
-.shape3 {
-  width: 200px;
-  height: 200px;
-  top: 50%;
-  left: 15%;
-  transform: translateY(-50%);
+@media (min-width: 640px) {
+  .imageContainer {
+    height: 400px;
+  }
 }
 
-.heading {
-  font-size: 3.5rem;
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-  color: #0A2463;
+@media (min-width: 1024px) {
+  .imageContainer {
+    height: 500px;
+  }
+}
+
+.featuresSection {
+  width: 100%;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  background-color: var(--gray-50);
+}
+
+@media (min-width: 768px) {
+  .featuresSection {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .featuresSection {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+.featuresTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
   line-height: 1.2;
-  max-width: 800px;
+  letter-spacing: -0.025em;
 }
 
-.highlight {
-  color: #3E92CC;
+@media (min-width: 640px) {
+  .featuresTitle {
+    font-size: 3rem;
+  }
 }
 
-.subheading {
-  font-size: 1.25rem;
-  margin-bottom: 2.5rem;
-  color: #4B5563;
-  max-width: 600px;
+.featuresSubtext {
+  max-width: 900px;
+  color: var(--gray-500);
 }
 
-.ctaButtons {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 3rem;
+@media (min-width: 768px) {
+  .featuresSubtext {
+    font-size: 1.25rem;
+    line-height: 1.75;
+  }
 }
 
-.features {
-  padding: 6rem 2rem;
-  background-color: white;
+@media (min-width: 1024px) {
+  .featuresSubtext {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
 }
 
-.featuresGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+@media (min-width: 1280px) {
+  .featuresSubtext {
+    font-size: 1.25rem;
+    line-height: 1.75;
+  }
 }
 
 .featureCard {
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-}
-
-.featureCard:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
-}
-
-.featureIcon {
-  width: 48px;
-  height: 48px;
-  background: rgba(62, 146, 204, 0.1);
-  border-radius: 12px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  margin-bottom: 1.5rem;
-  color: #3E92CC;
-}
-
-.featureTitle {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: #0A2463;
-}
-
-.featureDescription {
-  color: #4B5563;
-  line-height: 1.6;
-}
-
-.testimonials {
-  padding: 6rem 2rem;
-  background-color: #f5f7fa;
-  text-align: center;
-}
-
-.testimonialsHeading {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-  color: #0A2463;
-}
-
-.testimonialCards {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.testimonialCard {
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  max-width: 350px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  text-align: left;
-}
-
-.testimonialText {
-  color: #4B5563;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  font-style: italic;
-}
-
-.testimonialAuthor {
-  display: flex;
-  align-items: center;
   gap: 1rem;
 }
 
-.authorAvatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
+.featureIcon {
+  display: flex;
+  height: 3rem;
+  width: 3rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background-color: var(--blue-100);
 }
 
-.authorInfo {
+.featureIconSvg {
+  height: 1.5rem;
+  width: 1.5rem;
+  color: var(--blue-600);
+}
+
+.featureTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.featureDescription {
+  color: var(--gray-500);
+}
+
+.footer {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  width: 100%;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-top: 1px solid var(--border-color);
 }
 
-.authorName {
-  font-weight: 600;
-  color: #0A2463;
-}
-
-.authorRole {
-  color: #6B7280;
-  font-size: 0.875rem;
-}
-
-.cta {
-  padding: 6rem 2rem;
-  background: linear-gradient(135deg, #0A2463 0%, #3E92CC 100%);
-  color: white;
-  text-align: center;
-}
-
-.ctaHeading {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.ctaSubheading {
-  font-size: 1.25rem;
-  margin-bottom: 2.5rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  opacity: 0.9;
-}
-
-.ctaButton {
-  background: white;
-  color: #0A2463;
-  padding: 1rem 2rem;
-  border-radius: 8px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  display: inline-block;
-  border: none;
-  cursor: pointer;
-}
-
-.ctaButton:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-@media (max-width: 768px) {
-  .heading {
-    font-size: 2.5rem;
+@media (min-width: 640px) {
+  .footer {
+    flex-direction: row;
   }
-  
-  .ctaButtons {
-    flex-direction: column;
-    width: 100%;
+}
+
+@media (min-width: 768px) {
+  .footer {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
-  
-  .ctaButtons a {
-    width: 100%;
+}
+
+.footerText {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+}
+
+.footerNav {
+  display: flex;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .footerNav {
+    margin-left: auto;
+    gap: 1.5rem;
   }
-  
-  .featuresGrid {
-    grid-template-columns: 1fr;
-  }
-  
-  .testimonialCards {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .testimonialCard {
-    width: 100%;
-  }
-  
-  .ctaHeading {
-    font-size: 2rem;
-  }
+}
+
+.footerLink {
+  font-size: 0.75rem;
+}
+
+.footerLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
