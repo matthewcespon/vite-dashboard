@@ -170,4 +170,7 @@
 .bannerContainer {
   padding: 1rem 1rem 0;
   border-radius: 0.5rem 0.5rem 0 0;
+  min-height: 3rem;
+  display: flex;
+  flex-direction: column;
 }
