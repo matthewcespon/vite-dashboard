@@ -3,16 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   BarChart3,
   Zap,
-  TrendingUp,
-  Shield,
-  BarChart,
   LineChart,
-  ArrowRight,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import styles from "./Home.module.css";
 import layoutStyles from "../../layout.module.css";
 import Button from "../../components/Button/Button";
+import heroStyles from "./hero.module.css";
 
 const Home: React.FC = () => {
   const { user } = useAuth();
@@ -29,43 +26,44 @@ const Home: React.FC = () => {
     <div className={`${layoutStyles.flexCol} ${layoutStyles.minHScreen}`}>
       {/* <Navbar /> */}
       <main className={layoutStyles.flex1}>
-        <section className={styles.heroSection}>
+
+<section className={heroStyles.hero}>
+
           <div
             className={`${layoutStyles.px4} ${layoutStyles.mdPx6}`}
           >
-            <div
-              className={`${layoutStyles.gap6} ${layoutStyles.lgGridCols2} ${layoutStyles.xlGridCols2}`}
-            >
-              <div
-                className={`${layoutStyles.flexCol} ${layoutStyles.justifyCenter} ${layoutStyles.spaceY4}`}
-              >
-                <div className={layoutStyles.spaceY2}>
-                  <h1 className={styles.heroTitle}>
-                    Transform Your Energy Data into Actionable Insights
-                  </h1>
-                  <p className={styles.heroSubtext}>
+
+          <div className={heroStyles.heroBackground}></div>
+          <div className={heroStyles.heroPattern}></div>
+          <div className={`${styles.container} ${heroStyles.heroContent}`}>
+            <div className={heroStyles.heroText}>
+              <h1 className={heroStyles.heroTitle}>
+                Transform Your Energy Data into 
+                  <span className={heroStyles.heroTitleAccent}> Actionable Insights</span>
+              </h1>
+              <p className={heroStyles.heroDescription}>
                     Monitor, analyze, and optimize energy consumption patterns
                     with our comprehensive dashboard solution
                   </p>
-                </div>
-                <div className={styles.buttonContainer}>
+              <div className={heroStyles.heroButtons}>
                   <Button
                     className={styles.primaryButton}
                     onClick={handleGetStarted}
                   >
                     Get Started
                   </Button>
-                </div>
               </div>
-              <div
-                className={`${layoutStyles.flexCol} ${layoutStyles.itemsCenter} ${layoutStyles.justifyCenter}`}
-              >
-                <div className={styles.imageContainer}>
+              <div className={heroStyles.heroFeatures}>
+                <div className={heroStyles.heroFeature}>
+                  <div className={heroStyles.heroFeatureDot}></div>
+                  <span className={heroStyles.heroFeatureText}>Sign-up today</span>
                 </div>
               </div>
             </div>
           </div>
+          </div>
         </section>
+
         <section className={styles.featuresSection}>
           <div
             className={`${layoutStyles.container} ${layoutStyles.px4} ${layoutStyles.mdPx6}`}
