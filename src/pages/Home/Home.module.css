@@ -1,0 +1,271 @@
+.container {
+  padding-top: 72px;
+  overflow-x: hidden;
+}
+
+.hero {
+  min-height: calc(100vh - 72px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.heroBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4ecfb 100%);
+  overflow: hidden;
+}
+
+.shape {
+  position: absolute;
+  background: rgba(62, 146, 204, 0.1);
+  border-radius: 50%;
+}
+
+.shape1 {
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  right: -100px;
+}
+
+.shape2 {
+  width: 300px;
+  height: 300px;
+  bottom: -50px;
+  left: -50px;
+}
+
+.shape3 {
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  left: 15%;
+  transform: translateY(-50%);
+}
+
+.heading {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #0A2463;
+  line-height: 1.2;
+  max-width: 800px;
+}
+
+.highlight {
+  color: #3E92CC;
+}
+
+.subheading {
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem;
+  color: #4B5563;
+  max-width: 600px;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.features {
+  padding: 6rem 2rem;
+  background-color: white;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.featureCard {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.featureCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.featureIcon {
+  width: 48px;
+  height: 48px;
+  background: rgba(62, 146, 204, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: #3E92CC;
+}
+
+.featureTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #0A2463;
+}
+
+.featureDescription {
+  color: #4B5563;
+  line-height: 1.6;
+}
+
+.testimonials {
+  padding: 6rem 2rem;
+  background-color: #f5f7fa;
+  text-align: center;
+}
+
+.testimonialsHeading {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #0A2463;
+}
+
+.testimonialCards {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.testimonialCard {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 350px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  text-align: left;
+}
+
+.testimonialText {
+  color: #4B5563;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.testimonialAuthor {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.authorAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.authorName {
+  font-weight: 600;
+  color: #0A2463;
+}
+
+.authorRole {
+  color: #6B7280;
+  font-size: 0.875rem;
+}
+
+.cta {
+  padding: 6rem 2rem;
+  background: linear-gradient(135deg, #0A2463 0%, #3E92CC 100%);
+  color: white;
+  text-align: center;
+}
+
+.ctaHeading {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaSubheading {
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.9;
+}
+
+.ctaButton {
+  background: white;
+  color: #0A2463;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+}
+
+.ctaButton:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .heading {
+    font-size: 2.5rem;
+  }
+  
+  .ctaButtons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .ctaButtons a {
+    width: 100%;
+  }
+  
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .testimonialCards {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .testimonialCard {
+    width: 100%;
+  }
+  
+  .ctaHeading {
+    font-size: 2rem;
+  }
+}
