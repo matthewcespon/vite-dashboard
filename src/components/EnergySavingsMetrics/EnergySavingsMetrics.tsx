@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import { Select, Option, FormControl, FormLabel } from '@mui/joy';
 import Metrics from '../Metrics/Metrics';
@@ -25,6 +25,17 @@ interface EnergySavingsData {
   'energy-savings-units': string;
 }
 
+// Add an interface for cache entries
+interface CacheEntry {
+  timestamp: number;
+  data: any;
+}
+
+// Cache interface to store responses by query parameters
+interface Cache {
+  [key: string]: CacheEntry;
+}
+
 const US_STATES = [
   { code: 'NY', name: 'New York' },
   { code: 'CA', name: 'California' },
@@ -43,6 +54,12 @@ const EnergySavingsMetrics: React.FC<EnergySavingsMetricsProps> = ({ apiKey }) =
   const [metrics, setMetrics] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Cache reference that persists between renders
+  const cache = useRef<Cache>({});
+  
+  // Cache expiration time in milliseconds (e.g., 1 hour)
+  const CACHE_EXPIRATION = 60 * 60 * 1000;
 
   const years = ["2023", "2022", "2021", "2020"];
 
@@ -54,17 +71,40 @@ const EnergySavingsMetrics: React.FC<EnergySavingsMetricsProps> = ({ apiKey }) =
       try {
         const prevYear = (parseInt(year) - 1).toString();
         
+        // Create a cache key based on the request parameters
+        const cacheKey = `${state}-${prevYear}-${year}`;
+        
+        // Check if we have a valid cache entry
+        const cacheEntry = cache.current[cacheKey];
+        const now = Date.now();
+        
+        if (cacheEntry && now - cacheEntry.timestamp < CACHE_EXPIRATION) {
+          // Use cached data if it exists and hasn't expired
+          console.log("Using cached data for:", cacheKey);
+          setMetrics(cacheEntry.data);
+          setLoading(false);
+          return;
+        }
+        
+        // If no cache hit or cache expired, fetch from API
         const url = `https://api.eia.gov/v2/electricity/state-electricity-profiles/energy-efficiency/data/?frequency=annual&data[0]=energy-savings&facets[state][]=${state}&facets[sector][]=IND&facets[sector][]=RES&facets[sector][]=TOT&start=${prevYear}&end=${year}&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000&api_key=${apiKey}`;
         
+        console.log("Fetching fresh data for:", cacheKey);
         const response = await fetch(url);
         
         if (!response.ok) {
-          throw new Error(`Failed to fetch data: ${response.statusText}`);
+          throw new Error(`Failed to fetch data: ${response.status}`);
         }
         
         const data: EIAResponse = await response.json();
         
         const processedMetrics = processEnergySavingsData(data, year);
+        
+        cache.current[cacheKey] = {
+          timestamp: now,
+          data: processedMetrics
+        };
+        
         setMetrics(processedMetrics);
       } catch (err) {
         console.error('Error fetching energy savings data:', err);
@@ -192,16 +232,12 @@ const EnergySavingsMetrics: React.FC<EnergySavingsMetricsProps> = ({ apiKey }) =
         </FormControl>
       </div>
       
-      {loading ? (
-        <div className={styles.loadingContainer}>
-          <div className={styles.loadingSpinner}></div>
-        </div>
-      ) : error ? (
+      {error ? (
         <div className={styles.errorMessage}>
           {error}
         </div>
       ) : (
-        <Metrics metrics={metrics} />
+        <Metrics metrics={metrics} isLoading={loading} />
       )}
     </>
   );

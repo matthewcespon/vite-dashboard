@@ -38,13 +38,6 @@ const Navbar: React.FC = () => {
         <Link to="/" className={styles.navLink} onClick={handleNavLinkClick}>
           Home
         </Link>
-        <Link to="/features" className={styles.navLink} onClick={handleNavLinkClick}>
-          Features
-        </Link>
-        <Link to="/pricing" className={styles.navLink} onClick={handleNavLinkClick}>
-          Pricing
-        </Link>
-        
           {user ? (
             <>
               <Link 

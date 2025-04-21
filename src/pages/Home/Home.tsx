@@ -30,10 +30,10 @@ const Home: React.FC = () => {
       <main className={layoutStyles.flex1}>
         <section className={styles.heroSection}>
           <div
-            className={`${layoutStyles.container} ${layoutStyles.px4} ${layoutStyles.mdPx6}`}
+            className={`${layoutStyles.px4} ${layoutStyles.mdPx6}`}
           >
             <div
-              className={`${layoutStyles.lgGridCols2} ${layoutStyles.xlGridCols2}`}
+              className={`${layoutStyles.gap6} ${layoutStyles.lgGridCols2} ${layoutStyles.xlGridCols2}`}
             >
               <div
                 className={`${layoutStyles.flexCol} ${layoutStyles.justifyCenter} ${layoutStyles.spaceY4}`}
