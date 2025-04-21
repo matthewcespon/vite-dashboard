@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Zap, TrendingUp, TrendingDown, BarChart, FileText, Download, Eye } from 'lucide-react';
+import { TrendingUp, TrendingDown, FileText, Download, Eye } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import Banner from '../../components/Banner/Banner';
 import Button from '../../components/Button/Button';
