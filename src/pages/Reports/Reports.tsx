@@ -153,7 +153,7 @@ const Reports: React.FC = () => {
           <h2>Your Reports</h2>
           
           {/* Pagination controls at the top */}
-          {!isLoading && !error && pagination && (
+          {!error && pagination && (
             <div className={styles.paginationControls}>
               <div className={styles.paginationInfo}>
                 Showing page {pagination.page} of {pagination.pages} ({pagination.total} reports total)
