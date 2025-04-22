@@ -120,11 +120,10 @@ const Reports: React.FC = () => {
     setCurrentPage(page);
   };
 
-  // Helper function to get status badge class
   const getStatusClass = (status: string): string => {
     const statusLower = status.toLowerCase();
     if (statusLower === 'approved') return styles.approved;
-    if (statusLower === 'pending approval') return styles.pendingApproval;
+    if (statusLower === 'pending') return styles.pendingApproval;
     if (statusLower === 'rejected') return styles.rejected;
     if (statusLower === 'draft') return styles.draft;
     return '';
