@@ -123,7 +123,7 @@ const Reports: React.FC = () => {
   const getStatusClass = (status: string): string => {
     const statusLower = status.toLowerCase();
     if (statusLower === 'approved') return styles.approved;
-    if (statusLower === 'pending') return styles.pendingApproval;
+    if (statusLower === 'pending') return styles.pending;
     if (statusLower === 'rejected') return styles.rejected;
     if (statusLower === 'draft') return styles.draft;
     return '';
