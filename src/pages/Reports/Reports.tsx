@@ -3,39 +3,14 @@ import { api } from '../../utils/api';
 import styles from './Reports.module.css';
 import Footer from '../../components/Footer/Footer';
 
-interface DateRange {
-  start: string;
-  end: string;
-}
-
-interface ScheduledReport {
-  isScheduled: boolean;
-  frequency: string;
-  recipients: string[];
-}
-
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-}
-
 interface Report {
-  _id: string;
+  id: string;
   title: string;
   description: string;
-  createdAt: string;
-  updatedAt: string;
-  state: string;
-  parameters?: {
-    dateRange?: DateRange;
-    sectors?: string[];
-    locations?: string[];
-  };
-  scheduledReport?: ScheduledReport;
-  createdBy?: User;
-  approvedBy?: User;
-  approvedDate?: string;
+  status: string;
+  date: string;
+  location: string;
+  creator: string;
 }
 
 interface ReportsResponse {
@@ -94,7 +69,7 @@ const Reports: React.FC = () => {
       setError(null);
       
       try {
-        const { data } = await api.get<ReportsResponse>(`/api/reports?page=${currentPage}&limit=${pageSize}`);
+        const { data } = await api.get<ReportsResponse>(`/api/reports/table?page=${currentPage}&limit=${pageSize}`);
         setReports(data.reports);
         setPagination(data.pagination);
         
@@ -211,18 +186,18 @@ const Reports: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {reports.map((report) => (
-                  <tr key={report._id}>
+                {reports.map(report => (
+                  <tr key={report.id}>
                     <td>{report.title}</td>
                     <td>{report.description.substring(0, 50)}...</td>
                     <td>
-                      <span className={`${styles.statusBadge} ${getStatusClass(report.state)}`}>
-                        {report.state}
+                      <span className={`${styles.statusBadge} ${getStatusClass(report.status)}`}>
+                        {report.status}
                       </span>
                     </td>
-                    <td>{formatDate(report.createdAt)}</td>
-                    <td>{report.parameters?.locations?.join(', ') || 'N/A'}</td>
-                    <td>{report.createdBy?.name || 'Unknown'}</td>
+                    <td>{formatDate(report.date)}</td>
+                    <td>{report.location}</td>
+                    <td>{report.creator}</td>
                   </tr>
                 ))}
               </tbody>
