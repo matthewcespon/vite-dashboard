@@ -2,37 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { api } from '../../utils/api';
 import styles from './Reports.module.css';
 import Footer from '../../components/Footer/Footer';
-
-interface Report {
-  id: string;
-  title: string;
-  description: string;
-  status: string;
-  date: string;
-  location: string;
-  creator: string;
-}
-
-interface ReportsResponse {
-  reports: Report[];
-  pagination: {
-    total: number;
-    page: number;
-    pages: number;
-  };
-}
-
-interface CachedReportsData {
-  [key: string]: {
-    reports: Report[];
-    pagination: {
-      total: number;
-      page: number;
-      pages: number;
-    };
-    timestamp: number;
-  };
-}
+import Pagination from '../../components/Pagination/Pagination';
+import { CachedReportsData, ReportsResponse, Report } from '../../types/reports';
 
 const Reports: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -128,43 +99,13 @@ const Reports: React.FC = () => {
           
           {/* Pagination controls at the top */}
           {!error && pagination && (
-            <div className={styles.paginationControls}>
-              <div className={styles.paginationInfo}>
-                Showing page {pagination.page} of {pagination.pages} ({pagination.total} reports total)
-              </div>
-              <div className={styles.paginationButtons}>
-                <button 
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage <= 1}
-                  className={styles.paginationButton}
-                >
-                  Previous
-                </button>
-                
-                {/* Generate page number buttons */}
-                {pagination.pages && Array.from({ length: pagination.pages }, (_, i) => i + 1)
-                  .filter(page => page === 1 || page === pagination.pages || 
-                    (page >= currentPage - 1 && page <= currentPage + 1))
-                  .map(page => (
-                    <button
-                      key={page}
-                      onClick={() => handlePageChange(page)}
-                      className={`${styles.paginationButton} ${currentPage === page ? styles.activeButton : ''}`}
-                    >
-                      {page}
-                    </button>
-                  ))
-                }
-                
-                <button 
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage >= (pagination.pages || 1)}
-                  className={styles.paginationButton}
-                >
-                  Next
-                </button>
-              </div>
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={pagination.pages}
+              totalItems={pagination.total}
+              onPageChange={handlePageChange}
+              itemName="reports"
+            />
           )}
         </div>
 

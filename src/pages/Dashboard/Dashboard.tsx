@@ -15,8 +15,6 @@ const Dashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   
-  // Add your actual API key here
-  const EIA_API_KEY = "Bmm5PXdfBbzs9HJXUihhhRog11lDdwPpUEUO3k0d"; 
   
   useEffect(() => {
     // Check if the user is authenticated
@@ -123,7 +121,7 @@ const Dashboard: React.FC = () => {
           <h1 className={styles.greeting}>Hello, {user.name}</h1>
           <p className={styles.subtitle}>Welcome to your Energy Insights Dashboard</p>
           
-          <EnergySavingsMetrics apiKey={EIA_API_KEY} />
+          <EnergySavingsMetrics />
         </div>
       </div>
       

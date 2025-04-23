@@ -163,6 +163,14 @@
   color: var(--gray-500, #6B7280);
 }
 
+.bottomPagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
 @media (min-width: 768px) {
   .content {
     grid-template-columns: repeat(2, 1fr);
@@ -177,5 +185,9 @@
   
   .paginationInfo {
     text-align: center;
+  }
+  
+  .bottomPagination {
+    justify-content: center;
   }
 }

@@ -3,52 +3,10 @@ import { TrendingUp, TrendingDown } from 'lucide-react';
 import { Select, Option, FormControl } from '@mui/joy';
 import Metrics from '../Metrics/Metrics';
 import styles from './EnergySavingsMetrics.module.css';
+import { Cache, US_STATES, EIAResponse, EnergySavingsData } from '../../types/energySavings';
 
-interface EIAResponse {
-  response: {
-    total: string;
-    dateFormat: string;
-    frequency: string;
-    data: EnergySavingsData[];
-    description: string;
-  };
-}
 
-interface EnergySavingsData {
-  period: string;
-  state: string;
-  stateName: string;
-  timePeriod: string;
-  sector: string;
-  sectorName: string;
-  'energy-savings': string;
-  'energy-savings-units': string;
-}
-
-// Add an interface for cache entries
-interface CacheEntry {
-  timestamp: number;
-  data: any;
-}
-
-// Cache interface to store responses by query parameters
-interface Cache {
-  [key: string]: CacheEntry;
-}
-
-const US_STATES = [
-  { code: 'NY', name: 'New York' },
-  { code: 'CA', name: 'California' },
-  { code: 'TX', name: 'Texas' },
-  { code: 'FL', name: 'Florida' },
-  { code: 'PA', name: 'Pennsylvania' },
-];
-
-interface EnergySavingsMetricsProps {
-  apiKey: string;
-}
-
-const EnergySavingsMetrics: React.FC<EnergySavingsMetricsProps> = ({ apiKey }) => {
+const EnergySavingsMetrics: React.FC = () => {
   const [year, setYear] = useState<string>("2023");
   const [state, setState] = useState<string>("NY");
   const [metrics, setMetrics] = useState<any[]>([]);
@@ -62,6 +20,7 @@ const EnergySavingsMetrics: React.FC<EnergySavingsMetricsProps> = ({ apiKey }) =
   const CACHE_EXPIRATION = 60 * 60 * 1000;
 
   const years = ["2023", "2022", "2021", "2020"];
+  const apiKey = import.meta.env.VITE_EIA_API_KEY
 
   useEffect(() => {
     const fetchEnergySavingsData = async () => {
