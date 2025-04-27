@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -9,13 +9,11 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartData,
   ChartOptions
 } from 'chart.js';
 import { Button } from '@mui/joy';
 import styles from './EnergyChart.module.css';
 
-// Register ChartJS components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -73,33 +71,25 @@ const EnergyChart: React.FC<EnergyChartProps> = ({ title = 'Energy Consumption T
     return labels;
   };
   
-  // Generate random data for the chart
   const generateRandomData = (min: number, max: number, count: number): number[] => {
     return Array(count).fill(0).map(() => 
       Math.floor(Math.random() * (max - min + 1)) + min
     );
   };
   
-  // Get data based on selected time range
-  const getChartData = (): ChartData<'line'> => {
+  const chartData = useMemo(() => {
     const labels = generateDateLabels(timeRange);
-    
-    // Generate some random but somewhat realistic energy consumption data
     const electricityData = generateRandomData(800, 1200, labels.length);
     const gasData = generateRandomData(300, 600, labels.length);
-    
-    // Add some trends and patterns to make data look more realistic
     if (timeRange === '30d' || timeRange === '90d') {
-      // Add a weekly pattern (higher consumption during weekdays)
       for (let i = 0; i < electricityData.length; i++) {
-        const dayOfWeek = (i + 2) % 7; // Assuming labels start on a Monday
-        if (dayOfWeek === 0 || dayOfWeek === 6) { // Weekend
+        const dayOfWeek = (i + 2) % 7;
+        if (dayOfWeek === 0 || dayOfWeek === 6) {
           electricityData[i] = electricityData[i] * 0.8;
           gasData[i] = gasData[i] * 0.9;
         }
       }
     }
-    
     return {
       labels,
       datasets: [
@@ -111,7 +101,7 @@ const EnergyChart: React.FC<EnergyChartProps> = ({ title = 'Energy Consumption T
           borderWidth: 2,
           pointRadius: 0,
           pointHoverRadius: 4,
-          tension: 0, // Setting tension to 0 creates straight lines
+          tension: 0,
           fill: true,
         },
         {
@@ -122,12 +112,12 @@ const EnergyChart: React.FC<EnergyChartProps> = ({ title = 'Energy Consumption T
           borderWidth: 2,
           pointRadius: 0,
           pointHoverRadius: 4,
-          tension: 0, // Setting tension to 0 creates straight lines
+          tension: 0,
           fill: true,
         },
       ],
     };
-  };
+  }, [timeRange]);
   
   const chartOptions: ChartOptions<'line'> = {
     responsive: true,
@@ -192,13 +182,12 @@ const EnergyChart: React.FC<EnergyChartProps> = ({ title = 'Energy Consumption T
     },
     elements: {
       line: {
-        borderJoinStyle: 'miter', // Sharp corner joins
-        capBezierPoints: false, // Don't smooth the line
+        borderJoinStyle: 'miter',
+        capBezierPoints: false,
       },
     },
   };
   
-  // Handle time range change
   const handleTimeRangeChange = (range: TimeRange) => {
     setTimeRange(range);
   };
@@ -244,7 +233,7 @@ const EnergyChart: React.FC<EnergyChartProps> = ({ title = 'Energy Consumption T
       </div>
       
       <div className={styles.chartWrapper}>
-        <Line data={getChartData()} options={chartOptions} />
+        <Line data={chartData} options={chartOptions} />
       </div>
       
       <div className={styles.legend}>
