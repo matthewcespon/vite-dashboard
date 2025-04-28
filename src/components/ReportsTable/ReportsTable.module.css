@@ -1,0 +1,72 @@
+.reportsTableWrapper {
+  width: 100%;
+}
+.reportsTable {
+  overflow-x: auto;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+.table th, .table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: left;
+}
+.table th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+}
+.eyeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #3b82f6;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+.eyeButton:hover {
+  background: #f3f4f6;
+}
+.loading {
+  padding: 2rem;
+  text-align: center;
+  color: #888;
+}
+.errorMessage {
+  color: #b91c1c;
+  padding: 1rem;
+  text-align: center;
+}
+.emptyState {
+  padding: 2rem;
+  text-align: center;
+  color: #888;
+}
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.skeletonRow {
+  display: flex;
+  gap: 1rem;
+}
+.skeletonBox {
+  background: #f3f4f6;
+  border-radius: 6px;
+  height: 20px;
+  flex: 1;
+  animation: skeletonPulse 1.2s infinite ease-in-out;
+}
+.skeletonBox.short { width: 80px; }
+.skeletonBox.medium { width: 160px; }
+.skeletonBox.long { width: 240px; }
+@keyframes skeletonPulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
