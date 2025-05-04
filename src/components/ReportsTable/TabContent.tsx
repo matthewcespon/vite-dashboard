@@ -118,66 +118,415 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
       const margin = 10;
+      let yPosition = margin;
 
-      pdf.setFontSize(16);
-      pdf.text(reportDetail.title, margin, margin + 10);
-      pdf.setFontSize(12);
-      let yPosition = margin + 20;
+      pdf.setFont("helvetica");
 
-      const sections = [
-        { name: "Details", ref: detailsRef, title: "Report Details" },
-        { name: "Findings", ref: findingsRef, title: "Findings" },
-        {
-          name: "Recommendations",
-          ref: recommendationsRef,
-          title: "Recommendations",
-        },
-        { name: "Metrics", ref: metricsRef, title: "Metrics & Visualization" },
-      ];
+      pdf.setFontSize(18);
+      pdf.setTextColor(0, 0, 0);
+      pdf.text(reportDetail.title, margin, yPosition + 10);
+      yPosition += 20;
 
-      const originalTab = tabValue;
+      const addTableRow = (
+        label: string,
+        value: string,
+        x: number,
+        y: number,
+        maxWidth: number
+      ): number => {
+        pdf.setFontSize(11);
+        pdf.setFont("helvetica", "bold");
+        pdf.text(label, x, y);
 
-      for (let i = 0; i < sections.length; i++) {
-        const section = sections[i];
+        pdf.setFont("helvetica", "normal");
+        const valueX = x + 40;
+        const valueWidth = maxWidth - 45;
+        const valueLines = pdf.splitTextToSize(value, valueWidth);
+        pdf.text(valueLines, valueX, y);
 
-        setTabValue(i);
-        setGenerationProgress(
-          `Capturing ${section.title} (${i + 1}/${sections.length})...`
+        const lineHeight = pdf.getLineHeight() / pdf.internal.scaleFactor;
+        const rowHeight = Math.max(
+          lineHeight + 2,
+          valueLines.length * lineHeight
         );
 
-        const waitTime = i === 3 ? 1000 : 300;
-        await new Promise((resolve) => setTimeout(resolve, waitTime));
+        return y + rowHeight + 2;
+      };
 
-        if (section.ref.current) {
-          const canvas = await html2canvas(section.ref.current, {
-            scale: 2,
-            logging: false,
-            useCORS: true,
-            allowTaint: true,
-          });
+      const addSectionHeader = (
+        title: string,
+        x: number,
+        y: number
+      ): number => {
+        pdf.setFontSize(14);
+        pdf.setFont("helvetica", "bold");
+        pdf.text(title, x, y);
+        pdf.setFont("helvetica", "normal");
+        return y + 10;
+      };
 
-          const imgData = canvas.toDataURL("image/jpeg", 0.9);
+      const checkNewPage = (requiredSpace: number): void => {
+        if (yPosition + requiredSpace > pageHeight - margin) {
+          pdf.addPage();
+          yPosition = margin + 10;
+        }
+      };
 
-          const imgWidth = pageWidth - 2 * margin;
-          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const originalTab = tabValue;
+      const availableWidth = pageWidth - 2 * margin;
 
-          if (i > 0 || yPosition + imgHeight > pageHeight - margin) {
-            pdf.addPage();
-            yPosition = margin + 10;
+      setTabValue(0);
+      setGenerationProgress("Processing Report Details...");
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
-            pdf.setFontSize(14);
-            pdf.text(section.title, margin, yPosition);
-            pdf.setFontSize(12);
-            yPosition += 10;
-          }
+      pdf.setFontSize(12);
+      pdf.setFont("helvetica", "bold");
+      pdf.text("General Information", margin, yPosition);
+      pdf.setFont("helvetica", "normal");
+      yPosition += 8;
 
-          pdf.addImage(imgData, "JPEG", margin, yPosition, imgWidth, imgHeight);
-          yPosition += imgHeight + 10;
+      checkNewPage(60);
+      yPosition = addTableRow(
+        "Description",
+        reportDetail.description,
+        margin,
+        yPosition + 2,
+        availableWidth
+      );
+      yPosition = addTableRow(
+        "State",
+        reportDetail.state,
+        margin,
+        yPosition,
+        availableWidth
+      );
+      yPosition = addTableRow(
+        "Created By",
+        `${reportDetail.createdBy.name} (${reportDetail.createdBy.email})`,
+        margin,
+        yPosition,
+        availableWidth
+      );
+
+      if (reportDetail.approvedBy) {
+        yPosition = addTableRow(
+          "Approved By",
+          `${reportDetail.approvedBy.name} (${reportDetail.approvedBy.email})`,
+          margin,
+          yPosition,
+          availableWidth
+        );
+      }
+
+      if (reportDetail.approvedDate) {
+        yPosition = addTableRow(
+          "Approved Date",
+          formatDate(reportDetail.approvedDate),
+          margin,
+          yPosition,
+          availableWidth
+        );
+      }
+
+      yPosition = addTableRow(
+        "Created At",
+        formatDate(reportDetail.createdAt),
+        margin,
+        yPosition,
+        availableWidth
+      );
+      yPosition = addTableRow(
+        "Updated At",
+        formatDate(reportDetail.updatedAt),
+        margin,
+        yPosition,
+        availableWidth
+      );
+
+      checkNewPage(50);
+      yPosition += 10;
+      pdf.setFontSize(12);
+      pdf.setFont("helvetica", "bold");
+      pdf.text("Parameters", margin, yPosition);
+      pdf.setFont("helvetica", "normal");
+      yPosition += 8;
+
+      yPosition = addTableRow(
+        "Date Range",
+        `${formatDate(reportDetail.parameters.dateRange.start)} - ${formatDate(
+          reportDetail.parameters.dateRange.end
+        )}`,
+        margin,
+        yPosition,
+        availableWidth
+      );
+      yPosition = addTableRow(
+        "Sectors",
+        reportDetail.parameters.sectors.join(", "),
+        margin,
+        yPosition,
+        availableWidth
+      );
+      yPosition = addTableRow(
+        "Locations",
+        reportDetail.parameters.locations.join(", "),
+        margin,
+        yPosition,
+        availableWidth
+      );
+
+      checkNewPage(50);
+      yPosition += 10;
+      pdf.setFontSize(12);
+      pdf.setFont("helvetica", "bold");
+      pdf.text("Scheduled Report", margin, yPosition);
+      pdf.setFont("helvetica", "normal");
+      yPosition += 8;
+
+      yPosition = addTableRow(
+        "Is Scheduled",
+        reportDetail.scheduledReport.isScheduled ? "Yes" : "No",
+        margin,
+        yPosition,
+        availableWidth
+      );
+      yPosition = addTableRow(
+        "Frequency",
+        reportDetail.scheduledReport.frequency,
+        margin,
+        yPosition,
+        availableWidth
+      );
+      yPosition = addTableRow(
+        "Recipients",
+        reportDetail.scheduledReport.recipients.join(", "),
+        margin,
+        yPosition,
+        availableWidth
+      );
+
+      pdf.addPage();
+      yPosition = margin + 10;
+      setTabValue(1);
+      setGenerationProgress("Processing Findings...");
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      yPosition = addSectionHeader("Findings", margin, yPosition);
+
+      if (reportDetail.findings.length === 0) {
+        pdf.setFontSize(11);
+        pdf.text("No findings available for this report.", margin, yPosition);
+        yPosition += 10;
+      } else {
+        for (const finding of reportDetail.findings) {
+          checkNewPage(70);
+
+          pdf.setFontSize(12);
+          pdf.setFont("helvetica", "bold");
+          pdf.text(finding.title, margin, yPosition);
+          pdf.setFont("helvetica", "normal");
+          yPosition += 8;
+
+          yPosition = addTableRow(
+            "Description",
+            finding.description,
+            margin,
+            yPosition,
+            availableWidth
+          );
+          yPosition = addTableRow(
+            "Importance",
+            finding.importance.charAt(0).toUpperCase() +
+              finding.importance.slice(1),
+            margin,
+            yPosition,
+            availableWidth
+          );
+
+          yPosition += 10;
         }
       }
 
-      setGenerationProgress("Finalizing document...");
+      pdf.addPage();
+      yPosition = margin + 10;
+      setTabValue(2);
+      setGenerationProgress("Processing Recommendations...");
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
+      yPosition = addSectionHeader("Recommendations", margin, yPosition);
+
+      if (reportDetail.recommendations.length === 0) {
+        pdf.setFontSize(11);
+        pdf.text(
+          "No recommendations available for this report.",
+          margin,
+          yPosition
+        );
+        yPosition += 10;
+      } else {
+        for (const recommendation of reportDetail.recommendations) {
+          checkNewPage(70);
+
+          pdf.setFontSize(12);
+          pdf.setFont("helvetica", "bold");
+          pdf.text(recommendation.title, margin, yPosition);
+          pdf.setFont("helvetica", "normal");
+          yPosition += 8;
+
+          yPosition = addTableRow(
+            "Description",
+            recommendation.description,
+            margin,
+            yPosition,
+            availableWidth
+          );
+          yPosition = addTableRow(
+            "Estimated Savings",
+            `$${recommendation.estimatedSavings.toFixed(2)}`,
+            margin,
+            yPosition,
+            availableWidth
+          );
+          yPosition = addTableRow(
+            "Implementation",
+            recommendation.implementationDifficulty.charAt(0).toUpperCase() +
+              recommendation.implementationDifficulty.slice(1),
+            margin,
+            yPosition,
+            availableWidth
+          );
+
+          yPosition += 10;
+        }
+      }
+
+      pdf.addPage();
+      yPosition = margin + 10;
+      setTabValue(3);
+      setGenerationProgress("Processing Metrics & Visualization...");
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      yPosition = addSectionHeader(
+        "Metrics & Visualization",
+        margin,
+        yPosition
+      );
+
+      const { visualizationData } = reportDetail;
+
+      if (
+        !visualizationData ||
+        !visualizationData.chartData ||
+        visualizationData.chartData.length === 0
+      ) {
+        pdf.setFontSize(11);
+        pdf.text(
+          "No visualization data available for this report.",
+          margin,
+          yPosition
+        );
+        yPosition += 10;
+      } else {
+        try {
+          setGenerationProgress("Capturing chart...");
+
+          let chartElement = document.querySelector(
+            ".chartjs-render-monitor"
+          ) as HTMLElement;
+
+          if (!chartElement) {
+            chartElement = metricsRef.current?.querySelector(
+              'div[style*="height: 400px"]'
+            ) as HTMLElement;
+          }
+
+          if (chartElement) {
+            await new Promise((resolve) => setTimeout(resolve, 500));
+
+            const canvas = await html2canvas(chartElement, {
+              scale: 2,
+              logging: false,
+              useCORS: true,
+              allowTaint: true,
+              backgroundColor: "#ffffff",
+            });
+
+            const imgData = canvas.toDataURL("image/png", 1.0);
+
+            const imgWidth = pageWidth - 2 * margin;
+            const imgHeight = Math.min(
+              (canvas.height * imgWidth) / canvas.width,
+              100
+            );
+
+            pdf.addImage(
+              imgData,
+              "PNG",
+              margin,
+              yPosition,
+              imgWidth,
+              imgHeight
+            );
+            yPosition += imgHeight + 15;
+          } else {
+            pdf.setFontSize(11);
+            pdf.text("Chart could not be captured.", margin, yPosition);
+            yPosition += 10;
+          }
+        } catch (error) {
+          console.error("Error capturing chart:", error);
+          pdf.setFontSize(11);
+          pdf.text("Error capturing chart visualization.", margin, yPosition);
+          yPosition += 10;
+        }
+
+        checkNewPage(70);
+        pdf.setFontSize(12);
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Summary Metrics", margin, yPosition);
+        pdf.setFont("helvetica", "normal");
+        yPosition += 8;
+
+        const { summaryMetrics } = visualizationData;
+
+        yPosition = addTableRow(
+          "Total Consumption",
+          `${summaryMetrics.totalConsumption} kWh`,
+          margin,
+          yPosition,
+          availableWidth
+        );
+        yPosition = addTableRow(
+          "Total Cost",
+          `$${summaryMetrics.totalCost.toFixed(2)}`,
+          margin,
+          yPosition,
+          availableWidth
+        );
+        yPosition = addTableRow(
+          "Average Consumption",
+          `${summaryMetrics.averageConsumption} kWh`,
+          margin,
+          yPosition,
+          availableWidth
+        );
+        yPosition = addTableRow(
+          "Peak Consumption",
+          `${summaryMetrics.peakConsumption} kWh`,
+          margin,
+          yPosition,
+          availableWidth
+        );
+        yPosition = addTableRow(
+          "Savings Opportunity",
+          `$${summaryMetrics.savingsOpportunity.toFixed(2)}`,
+          margin,
+          yPosition,
+          availableWidth
+        );
+      }
+
+      setGenerationProgress("Finalizing document...");
       setTabValue(originalTab);
 
       pdf.save(
@@ -393,7 +742,6 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
       })),
     };
 
-    // Chart options
     const chartOptions: ChartOptions<"line"> = {
       responsive: true,
       maintainAspectRatio: false,
