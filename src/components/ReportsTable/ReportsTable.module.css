@@ -1,5 +1,6 @@
 .reportsTableWrapper {
   width: 100%;
+  min-height: 1000px;
 }
 .reportsTable {
   overflow-x: auto;

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Zap, Menu, X } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
-import styles from './Navbar.module.css';
-import Button from '../Button/Button';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Zap, Menu, X } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
+import styles from "./Navbar.module.css";
+import Button from "../Button/Button";
 // import styles from './navbar2.module.css';
 
 const Navbar: React.FC = () => {
@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
   };
 
   const handleNavLinkClick = () => {
@@ -35,69 +35,59 @@ const Navbar: React.FC = () => {
         {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
 
-      <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}>
+      <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}>
         <Link to="/" className={styles.navLink} onClick={handleNavLinkClick}>
           Home
         </Link>
-          {user ? (
-            <>
-<Link 
-                to="/reports" 
-                className={styles.navLink} 
-                onClick={handleNavLinkClick}
-              >
-                Reports
-              </Link>
-              <Link 
-                to="/insights" 
-                className={styles.navLink} 
-                onClick={handleNavLinkClick}
-              >
-                Insights
-              </Link>
-              <Link 
-                to="/dashboard" 
-                className={styles.signupButton} 
-                onClick={handleNavLinkClick}
-              >
-                Dashboard
-              </Link>
-              <Button 
-                      variant="text" 
-                      size="small"
-                onClick={handleLogout}
-              >
-                <div className={styles.avatar}>
-                  {user.name.charAt(0)}
-                </div>
-                <span
-              className={styles.logoutButton}
-                >Logout</span>
-              </Button>
-            </>
-          ) : (
-            <>
-            
-              <Link 
-                to="/login" 
-                className={styles.loginButton} 
-                onClick={handleNavLinkClick}
-              >
-                Login
-              </Link>
-              <Link 
-                to="/register" 
-                className={styles.signupButton} 
-                onClick={handleNavLinkClick}
-              >
-                Sign Up
-              </Link>
-            </>
-          )}
+        {user ? (
+          <>
+            <Link
+              to="/reports"
+              className={styles.navLink}
+              onClick={handleNavLinkClick}
+            >
+              Reports
+            </Link>
+            <Link
+              to="/insights"
+              className={styles.navLink}
+              onClick={handleNavLinkClick}
+            >
+              Insights
+            </Link>
+            <Link
+              to="/dashboard"
+              className={styles.signupButton}
+              onClick={handleNavLinkClick}
+            >
+              Dashboard
+            </Link>
+            <Button variant="text" size="small" onClick={handleLogout}>
+              <div className={styles.avatar}>{user.name.charAt(0)}</div>
+              <span className={styles.logoutButton}>Logout</span>
+            </Button>
+          </>
+        ) : (
+          <>
+            <Link
+              to="/login"
+              className={styles.loginButton}
+              onClick={handleNavLinkClick}
+            >
+              Login
+            </Link>
+            <Link
+              to="/register"
+              className={styles.signupButton}
+              onClick={handleNavLinkClick}
+            >
+              Sign Up
+            </Link>
+          </>
+        )}
       </nav>
     </header>
   );
-
 };
 
 export default Navbar;
