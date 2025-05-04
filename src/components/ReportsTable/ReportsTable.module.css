@@ -31,6 +31,21 @@
 .eyeButton:hover {
   background: #f3f4f6;
 }
+.eyeButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.spinningLoader {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 .loading {
   padding: 2rem;
   text-align: center;
@@ -69,4 +84,23 @@
   0% { opacity: 1; }
   50% { opacity: 0.5; }
   100% { opacity: 1; }
+}
+
+/* Detailed report styles */
+.detailTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+
+.detailTable th, .detailTable td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detailTable th {
+  width: 20%;
+  font-weight: 500;
+  color: #4b5563;
 }

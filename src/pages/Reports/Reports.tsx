@@ -54,27 +54,8 @@ const Reports: React.FC = () => {
     fetchReports();
   }, [currentPage, pageSize]);
 
-  // Handle page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-  };
-
-  const getStatusClass = (status: string): string => {
-    const statusLower = status.toLowerCase();
-    if (statusLower === 'approved') return styles.approved;
-    if (statusLower === 'pending') return styles.pending;
-    if (statusLower === 'rejected') return styles.rejected;
-    if (statusLower === 'draft') return styles.draft;
-    return '';
-  };
-
-  // Format date to readable string
-  const formatDate = (dateString: string): string => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
   };
 
   return (
@@ -105,17 +86,6 @@ const Reports: React.FC = () => {
           pagination={pagination}
           onPageChange={handlePageChange}
           currentPage={currentPage}
-          PaginationComponent={
-            !error && pagination ? (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={pagination.pages}
-                totalItems={pagination.total}
-                onPageChange={handlePageChange}
-                itemName="reports"
-              />
-            ) : null
-          }
         />
       </div>
       <Footer />
