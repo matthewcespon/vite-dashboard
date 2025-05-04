@@ -3,6 +3,30 @@ import { Divider, Box, Tabs, Tab } from "@mui/material";
 import { DetailedReport } from "../../utils/detailedReport";
 import styles from "./ReportsTable.module.css";
 import Status from "../Status/Status";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartOptions,
+  BarElement,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 interface TabContentProps {
   reportDetail: DetailedReport;
@@ -48,7 +72,7 @@ type TabSection = {
 const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
   const [tabValue, setTabValue] = useState(0);
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 
@@ -234,6 +258,120 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
     </>
   );
 
+  const renderMetricsContent = () => {
+    const { visualizationData } = reportDetail;
+    
+    if (!visualizationData || !visualizationData.chartData || visualizationData.chartData.length === 0) {
+      return <p>No visualization data available for this report.</p>;
+    }
+
+    const chartColors = ["#3E92CC", "#FF9F1C", "#00B2A9", "#6D63FF"];
+
+    const chartData = {
+      labels: visualizationData.chartData[0].labels,
+      datasets: visualizationData.chartData.map((dataset, index) => ({
+        label: dataset.label,
+        data: dataset.data,
+        borderColor: chartColors[index % chartColors.length],
+        backgroundColor: `${chartColors[index % chartColors.length]}20`,
+        borderWidth: 2,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        tension: 0.2,
+        fill: true,
+      })),
+    };
+
+    // Chart options
+    const chartOptions: ChartOptions<'line'> = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          align: 'end',
+        },
+        tooltip: {
+          mode: 'index',
+          intersect: false,
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          titleColor: '#111827',
+          bodyColor: '#374151',
+          borderColor: '#E5E7EB',
+          borderWidth: 1,
+          padding: 8,
+          boxPadding: 4,
+          cornerRadius: 4,
+        },
+      },
+      scales: {
+        x: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: '#9CA3AF',
+          },
+        },
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: '#F3F4F6',
+          },
+          ticks: {
+            color: '#9CA3AF',
+          },
+        },
+      },
+      interaction: {
+        mode: 'nearest',
+        axis: 'x',
+        intersect: false,
+      },
+    };
+
+    const { summaryMetrics } = visualizationData;
+
+    return (
+      <>
+        <h2>Metrics & Visualization</h2>
+        
+        <div style={{ height: '400px', marginBottom: '30px' }}>
+          <Line data={chartData} options={chartOptions} />
+        </div>
+
+        <Divider style={{ marginTop: 24, marginBottom: 24 }} textAlign="left">
+          <h3>Summary Metrics</h3>
+        </Divider>
+        
+        <table className={styles.detailTable}>
+          <tbody>
+            <tr>
+              <th>Total Consumption</th>
+              <td>{summaryMetrics.totalConsumption} kWh</td>
+            </tr>
+            <tr>
+              <th>Total Cost</th>
+              <td>${summaryMetrics.totalCost.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <th>Average Consumption</th>
+              <td>{summaryMetrics.averageConsumption} kWh</td>
+            </tr>
+            <tr>
+              <th>Peak Consumption</th>
+              <td>{summaryMetrics.peakConsumption} kWh</td>
+            </tr>
+            <tr>
+              <th>Savings Opportunity</th>
+              <td>${summaryMetrics.savingsOpportunity.toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </>
+    );
+  };
+
   return (
     <div>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -245,7 +383,7 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
           <Tab label="Details" {...a11yProps(0)} />
           <Tab label="Findings" {...a11yProps(1)} />
           <Tab label="Recommendations" {...a11yProps(2)} />
-          <Tab label="Additional Content" {...a11yProps(3)} />
+          <Tab label="Metrics" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={tabValue} index={0}>
@@ -258,8 +396,7 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
         {renderRecommendationsContent()}
       </CustomTabPanel>
       <CustomTabPanel value={tabValue} index={3}>
-        {/* This tab is intentionally left empty for future content */}
-        <div>Additional content will be displayed here</div>
+        {renderMetricsContent()}
       </CustomTabPanel>
     </div>
   );
