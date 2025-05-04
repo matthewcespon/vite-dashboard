@@ -151,7 +151,7 @@ const Login: React.FC = () => {
             loading={isLoading}
             className={styles.submitButton}
           >
-            Log In
+            {!isLoading ? "Log In" : <>&nbsp;</>}
           </Button>
         </form>
 

@@ -153,7 +153,7 @@ const Register: React.FC = () => {
             loading={isLoading}
             className={styles.submitButton}
           >
-            Sign Up
+            {!isLoading ? "Sign Up" : <>&nbsp;</>}
           </Button>
         </form>
         
