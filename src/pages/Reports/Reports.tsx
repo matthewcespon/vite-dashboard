@@ -80,7 +80,9 @@ const Reports: React.FC = () => {
       <Divider style={{ marginTop: 24, marginBottom: 24 }} />
       <div className={styles.card}>
         <div className={styles.cardHeader}>
-          <h2>Your Reports</h2>
+          <h2>
+            <>&nbsp;</>
+          </h2>
           {!error && pagination && (
             <Pagination
               currentPage={currentPage}
