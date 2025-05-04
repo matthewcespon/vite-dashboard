@@ -1,5 +1,13 @@
-import React, { useState } from "react";
-import { Divider, Box, Tabs, Tab } from "@mui/material";
+import React, { useState, useRef } from "react";
+import {
+  Divider,
+  Box,
+  Tabs,
+  Tab,
+  Backdrop,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
 import { DetailedReport } from "../../utils/detailedReport";
 import styles from "./ReportsTable.module.css";
 import Status from "../Status/Status";
@@ -16,6 +24,10 @@ import {
   BarElement,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import DownloadIcon from "@mui/icons-material/Download";
+import Button from "../Button/Button";
 
 ChartJS.register(
   CategoryScale,
@@ -71,6 +83,13 @@ type TabSection = {
 
 const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
   const [tabValue, setTabValue] = useState(0);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [generationProgress, setGenerationProgress] = useState("");
+
+  const detailsRef = useRef<HTMLDivElement>(null);
+  const findingsRef = useRef<HTMLDivElement>(null);
+  const recommendationsRef = useRef<HTMLDivElement>(null);
+  const metricsRef = useRef<HTMLDivElement>(null);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -82,6 +101,94 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
       month: "short",
       day: "numeric",
     });
+  };
+
+  const handleDownload = async () => {
+    if (isGeneratingPDF) return;
+    setIsGeneratingPDF(true);
+    setGenerationProgress("Preparing document...");
+
+    try {
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
+
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 10;
+
+      pdf.setFontSize(16);
+      pdf.text(reportDetail.title, margin, margin + 10);
+      pdf.setFontSize(12);
+      let yPosition = margin + 20;
+
+      const sections = [
+        { name: "Details", ref: detailsRef, title: "Report Details" },
+        { name: "Findings", ref: findingsRef, title: "Findings" },
+        {
+          name: "Recommendations",
+          ref: recommendationsRef,
+          title: "Recommendations",
+        },
+        { name: "Metrics", ref: metricsRef, title: "Metrics & Visualization" },
+      ];
+
+      const originalTab = tabValue;
+
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i];
+
+        setTabValue(i);
+        setGenerationProgress(
+          `Capturing ${section.title} (${i + 1}/${sections.length})...`
+        );
+
+        const waitTime = i === 3 ? 1000 : 300;
+        await new Promise((resolve) => setTimeout(resolve, waitTime));
+
+        if (section.ref.current) {
+          const canvas = await html2canvas(section.ref.current, {
+            scale: 2,
+            logging: false,
+            useCORS: true,
+            allowTaint: true,
+          });
+
+          const imgData = canvas.toDataURL("image/jpeg", 0.9);
+
+          const imgWidth = pageWidth - 2 * margin;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+          if (i > 0 || yPosition + imgHeight > pageHeight - margin) {
+            pdf.addPage();
+            yPosition = margin + 10;
+
+            pdf.setFontSize(14);
+            pdf.text(section.title, margin, yPosition);
+            pdf.setFontSize(12);
+            yPosition += 10;
+          }
+
+          pdf.addImage(imgData, "JPEG", margin, yPosition, imgWidth, imgHeight);
+          yPosition += imgHeight + 10;
+        }
+      }
+
+      setGenerationProgress("Finalizing document...");
+
+      setTabValue(originalTab);
+
+      pdf.save(
+        `${reportDetail.title.replace(/[^a-zA-Z0-9]/g, "_")}_report.pdf`
+      );
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsGeneratingPDF(false);
+      setGenerationProgress("");
+    }
   };
 
   const sections: TabSection[] = [
@@ -180,7 +287,7 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
   ];
 
   const renderDetailsContent = () => (
-    <>
+    <div ref={detailsRef}>
       <h2>{reportDetail.title}</h2>
 
       {sections.map((section, index) => (
@@ -191,11 +298,11 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
           {section.content(reportDetail, formatDate)}
         </React.Fragment>
       ))}
-    </>
+    </div>
   );
 
   const renderFindingsContent = () => (
-    <>
+    <div ref={findingsRef}>
       <h2>Findings</h2>
       {reportDetail.findings.map((finding, index) => (
         <React.Fragment key={`finding-${index}`}>
@@ -221,11 +328,11 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
       {reportDetail.findings.length === 0 && (
         <p>No findings available for this report.</p>
       )}
-    </>
+    </div>
   );
 
   const renderRecommendationsContent = () => (
-    <>
+    <div ref={recommendationsRef}>
       <h2>Recommendations</h2>
       {reportDetail.recommendations.map((recommendation, index) => (
         <React.Fragment key={`recommendation-${index}`}>
@@ -255,13 +362,17 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
       {reportDetail.recommendations.length === 0 && (
         <p>No recommendations available for this report.</p>
       )}
-    </>
+    </div>
   );
 
   const renderMetricsContent = () => {
     const { visualizationData } = reportDetail;
-    
-    if (!visualizationData || !visualizationData.chartData || visualizationData.chartData.length === 0) {
+
+    if (
+      !visualizationData ||
+      !visualizationData.chartData ||
+      visualizationData.chartData.length === 0
+    ) {
       return <p>No visualization data available for this report.</p>;
     }
 
@@ -283,21 +394,21 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
     };
 
     // Chart options
-    const chartOptions: ChartOptions<'line'> = {
+    const chartOptions: ChartOptions<"line"> = {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          position: 'top',
-          align: 'end',
+          position: "top",
+          align: "end",
         },
         tooltip: {
-          mode: 'index',
+          mode: "index",
           intersect: false,
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
-          titleColor: '#111827',
-          bodyColor: '#374151',
-          borderColor: '#E5E7EB',
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          titleColor: "#111827",
+          bodyColor: "#374151",
+          borderColor: "#E5E7EB",
           borderWidth: 1,
           padding: 8,
           boxPadding: 4,
@@ -310,22 +421,22 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
             display: false,
           },
           ticks: {
-            color: '#9CA3AF',
+            color: "#9CA3AF",
           },
         },
         y: {
           beginAtZero: true,
           grid: {
-            color: '#F3F4F6',
+            color: "#F3F4F6",
           },
           ticks: {
-            color: '#9CA3AF',
+            color: "#9CA3AF",
           },
         },
       },
       interaction: {
-        mode: 'nearest',
-        axis: 'x',
+        mode: "nearest",
+        axis: "x",
         intersect: false,
       },
     };
@@ -333,17 +444,17 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
     const { summaryMetrics } = visualizationData;
 
     return (
-      <>
+      <div ref={metricsRef}>
         <h2>Metrics & Visualization</h2>
-        
-        <div style={{ height: '400px', marginBottom: '30px' }}>
+
+        <div style={{ height: "400px", marginBottom: "30px" }}>
           <Line data={chartData} options={chartOptions} />
         </div>
 
         <Divider style={{ marginTop: 24, marginBottom: 24 }} textAlign="left">
           <h3 className={styles.dividerTitle}>Summary Metrics</h3>
         </Divider>
-        
+
         <table className={styles.detailTable}>
           <tbody>
             <tr>
@@ -368,17 +479,26 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
             </tr>
           </tbody>
         </table>
-      </>
+      </div>
     );
   };
 
   return (
     <div>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box
+        sx={{
+          borderBottom: 1,
+          borderColor: "divider",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Tabs
           value={tabValue}
           onChange={handleTabChange}
           aria-label="report tabs"
+          sx={{ flex: 1 }}
           className={styles.reportTabs}
         >
           <Tab label="Details" {...a11yProps(0)} />
@@ -386,6 +506,15 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
           <Tab label="Recommendations" {...a11yProps(2)} />
           <Tab label="Metrics" {...a11yProps(3)} />
         </Tabs>
+        <Button
+          size="small"
+          variant="text"
+          onClick={handleDownload}
+          disabled={isGeneratingPDF}
+        >
+          <DownloadIcon />
+          Download PDF
+        </Button>
       </Box>
       <CustomTabPanel value={tabValue} index={0}>
         {renderDetailsContent()}
@@ -399,6 +528,22 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
       <CustomTabPanel value={tabValue} index={3}>
         {renderMetricsContent()}
       </CustomTabPanel>
+
+      {/* Loading overlay for PDF generation */}
+      <Backdrop
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          color: "#fff",
+          flexDirection: "column",
+          gap: 2,
+        }}
+        open={isGeneratingPDF}
+      >
+        <CircularProgress color="inherit" />
+        <Typography variant="h6">
+          {generationProgress || "Generating PDF..."}
+        </Typography>
+      </Backdrop>
     </div>
   );
 };
