@@ -83,12 +83,18 @@
   gap: 0.5rem;
 }
 
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .heroFeatureDot {
   height: 0.5rem;
   width: 0.5rem;
   border-radius: 9999px;
   background-color: #0091f9;
   box-shadow: 0 4px 12px rgba(3, 150, 255, 0.832);
+  animation: blink 1.5s infinite;
 }
 
 .heroFeatureText {

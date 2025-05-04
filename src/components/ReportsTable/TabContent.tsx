@@ -186,7 +186,7 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
       {sections.map((section, index) => (
         <React.Fragment key={`section-${index}`}>
           <Divider style={{ marginTop: 24, marginBottom: 24 }} textAlign="left">
-            <h3>{section.title}</h3>
+            <h3 className={styles.dividerTitle}>{section.title}</h3>
           </Divider>
           {section.content(reportDetail, formatDate)}
         </React.Fragment>
@@ -200,7 +200,7 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
       {reportDetail.findings.map((finding, index) => (
         <React.Fragment key={`finding-${index}`}>
           <Divider style={{ marginTop: 24, marginBottom: 24 }} textAlign="left">
-            <h3>{finding.title}</h3>
+            <h3 className={styles.dividerTitle}>{finding.title}</h3>
           </Divider>
           <table className={styles.detailTable}>
             <tbody>
@@ -230,7 +230,7 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
       {reportDetail.recommendations.map((recommendation, index) => (
         <React.Fragment key={`recommendation-${index}`}>
           <Divider style={{ marginTop: 24, marginBottom: 24 }} textAlign="left">
-            <h3>{recommendation.title}</h3>
+            <h3 className={styles.dividerTitle}>{recommendation.title}</h3>
           </Divider>
           <table className={styles.detailTable}>
             <tbody>
@@ -341,7 +341,7 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
         </div>
 
         <Divider style={{ marginTop: 24, marginBottom: 24 }} textAlign="left">
-          <h3>Summary Metrics</h3>
+          <h3 className={styles.dividerTitle}>Summary Metrics</h3>
         </Divider>
         
         <table className={styles.detailTable}>
@@ -379,6 +379,7 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
           value={tabValue}
           onChange={handleTabChange}
           aria-label="report tabs"
+          className={styles.reportTabs}
         >
           <Tab label="Details" {...a11yProps(0)} />
           <Tab label="Findings" {...a11yProps(1)} />
