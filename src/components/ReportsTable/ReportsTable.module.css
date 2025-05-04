@@ -10,7 +10,8 @@
 }
 .reportTabs > div > div > button {
   font-family: 'DM Sans Variable', 'inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  text-transform: lowercase;
+  font-weight: 700;
+  text-transform: none;
 }
 .table {
   width: 100%;
