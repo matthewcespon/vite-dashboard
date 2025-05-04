@@ -9,23 +9,30 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ open, onClose, children }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
   
   useEffect(() => {
     if (open) {
-      setIsVisible(true);
+      setIsRendered(true);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setIsVisible(true);
+        });
+      });
     } else {
+      setIsVisible(false);
       const timer = setTimeout(() => {
-        setIsVisible(false);
+        setIsRendered(false);
       }, 300);
       return () => clearTimeout(timer);
     }
   }, [open]);
 
-  if (!isVisible && !open) return null;
+  if (!isRendered) return null;
 
   return (
-    <div className={`${styles.overlay} ${open ? styles.overlayVisible : styles.overlayHidden}`} onClick={onClose}>
-      <div className={`${styles.modal} ${open ? styles.modalVisible : styles.modalHidden}`} onClick={e => e.stopPropagation()}>
+    <div className={`${styles.overlay} ${isVisible ? styles.overlayVisible : styles.overlayHidden}`} onClick={onClose}>
+      <div className={`${styles.modal} ${isVisible ? styles.modalVisible : styles.modalHidden}`} onClick={e => e.stopPropagation()}>
         <button className={styles.closeButton} onClick={onClose}>&times;</button>
         <div className={styles.content}>{children}</div>
       </div>

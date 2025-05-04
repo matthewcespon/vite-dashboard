@@ -107,11 +107,11 @@ const ReportsTable: React.FC<ReportsTableProps> = ({
                     >
                       {loadingReportIds.includes(report.id) ? (
                         <LoaderIcon
-                          size={18}
+                          size={24}
                           className={styles.spinningLoader}
                         />
                       ) : (
-                        <Eye size={18} />
+                        <Eye size={24} />
                       )}
                     </button>
                   </td>

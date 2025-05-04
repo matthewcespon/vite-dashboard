@@ -11,12 +11,13 @@
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
 }
 
 .overlayVisible {
   opacity: 1;
   visibility: visible;
+  transition: opacity 0.3s ease, visibility 0s linear 0s;
 }
 
 .overlayHidden {
@@ -33,9 +34,9 @@
   overflow-y: auto;
   position: relative;
   box-shadow: 0 2px 24px rgba(0,0,0,0.15);
-  transition: min-height 0.2s, min-width 0.2s, transform 0.3s ease, opacity 0.3s ease;
   transform: scale(0.95);
   opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .modalVisible {
