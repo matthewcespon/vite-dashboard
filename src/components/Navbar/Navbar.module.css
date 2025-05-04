@@ -59,23 +59,22 @@
   font-weight: 500;
   text-decoration: none;
   color: var(--text-color, #0A2463);
-  position: relative; /* Added for positioning the underline */
-  display: inline-block; /* Changed from default to inline-block */
-  padding-bottom: 2px; /* Space for underline */
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
 }
 
 .navLink:hover {
   color: var(--blue-600, #3E92CC);
 }
 
-/* Removed the previous ::after and replaced with a new implementation */
 .navLink::after {
   content: '';
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 1px;
+  height: 2px;
   background-color: var(--blue-600, #3E92CC);
   transform: scaleX(0);
   transition: transform 0.2s ease;

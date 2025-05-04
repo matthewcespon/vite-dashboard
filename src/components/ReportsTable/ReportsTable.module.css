@@ -7,6 +7,7 @@
 }
 .dividerTitle {
   color: #565656;
+  font-weight: 500;
 }
 .reportTabs > div > div > button {
   font-family: 'DM Sans Variable', 'inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
