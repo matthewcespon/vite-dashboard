@@ -28,6 +28,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import DownloadIcon from "@mui/icons-material/Download";
 import Button from "../Button/Button";
+import { formatDate } from "../../utils/date-util";
 
 ChartJS.register(
   CategoryScale,
@@ -93,14 +94,6 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
-  };
-
-  const formatDate = (dateString: string): string => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
   };
 
   const handleDownload = async () => {

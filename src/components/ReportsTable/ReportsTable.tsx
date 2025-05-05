@@ -7,6 +7,7 @@ import { api } from "../../utils/api";
 import { DetailedReport } from "../../utils/detailedReport";
 import TabContent from "./TabContent";
 import Status from "../Status/Status";
+import { formatDate } from "../../utils/date-util";
 
 interface ReportsTableProps {
   reports: Report[];
@@ -16,22 +17,6 @@ interface ReportsTableProps {
   onPageChange: (page: number) => void;
   currentPage: number;
   PaginationComponent?: React.ReactNode;
-}
-
-export interface VisualizationData {
-  summaryMetrics: {
-    totalConsumption: number;
-    totalCost: number;
-    averageConsumption: number;
-    peakConsumption: number;
-    savingsOpportunity: number;
-  };
-  chartData: Array<{
-    label: string;
-    data: number[];
-    labels: string[];
-    _id: string;
-  }>;
 }
 
 const ReportsTable: React.FC<ReportsTableProps> = ({
@@ -84,14 +69,6 @@ const ReportsTable: React.FC<ReportsTableProps> = ({
     } finally {
       setLoadingReportIds((prev) => prev.filter((reportId) => reportId !== id));
     }
-  };
-
-  const formatDate = (dateString: string): string => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
   };
 
   return (

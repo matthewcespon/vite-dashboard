@@ -9,6 +9,7 @@ import TabContent from '../ReportsTable/TabContent';
 import { DetailedReport } from '../../utils/detailedReport';
 import styles from './RecentReports.module.css';
 import { Box, Tabs, Tab } from '@mui/material';
+import { formatDate } from '../../utils/date-util';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -63,7 +64,6 @@ const RecentReports: React.FC = () => {
       try {
         const { data } = await api.get<{ reports: Report[] }>('/api/reports/table?page=1&limit=10');
         setReports(data.reports);
-        console.log('Fetched reports:', data.reports);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch recent reports');
         console.error('Error fetching recent reports:', err);
@@ -105,14 +105,6 @@ const RecentReports: React.FC = () => {
     }
   };
 
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(date);
-  };
 
   const renderContent = () => {
     if (isLoading) {

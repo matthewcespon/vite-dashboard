@@ -9,10 +9,11 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartOptions
 } from 'chart.js';
 import Button from '../Button/Button';
 import styles from './EnergyChart.module.css';
+import { generateDateLabels, TimeRange } from '../../utils/date-util';
+import { chartOptions } from '../../types/chart-options';
 
 ChartJS.register(
   CategoryScale,
@@ -24,7 +25,6 @@ ChartJS.register(
   Legend
 );
 
-type TimeRange = '7d' | '30d' | '90d' | '1y';
 
 interface EnergyChartProps {
   title?: string;
@@ -32,44 +32,6 @@ interface EnergyChartProps {
 
 const EnergyChart: React.FC<EnergyChartProps> = ({ title = 'Energy Consumption Trends' }) => {
   const [timeRange, setTimeRange] = useState<TimeRange>('30d');
-  
-  const generateDateLabels = (range: TimeRange): string[] => {
-    const today = new Date();
-    const labels: string[] = [];
-    
-    let days: number;
-    let interval: number;
-    
-    switch (range) {
-      case '7d':
-        days = 7;
-        interval = 1;
-        break;
-      case '30d':
-        days = 30;
-        interval = 5;
-        break;
-      case '90d':
-        days = 90;
-        interval = 15;
-        break;
-      case '1y':
-        days = 365;
-        interval = 30;
-        break;
-      default:
-        days = 30;
-        interval = 5;
-    }
-    
-    for (let i = days; i >= 0; i -= interval) {
-      const date = new Date();
-      date.setDate(today.getDate() - i);
-      labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-    }
-    
-    return labels;
-  };
   
   const generateRandomData = (min: number, max: number, count: number): number[] => {
     return Array(count).fill(0).map(() => 
@@ -119,74 +81,6 @@ const EnergyChart: React.FC<EnergyChartProps> = ({ title = 'Energy Consumption T
     };
   }, [timeRange]);
   
-  const chartOptions: ChartOptions<'line'> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        mode: 'index',
-        intersect: false,
-        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        titleColor: '#111827',
-        bodyColor: '#374151',
-        borderColor: '#E5E7EB',
-        borderWidth: 1,
-        padding: 8,
-        boxPadding: 4,
-        titleFont: {
-          size: 13,
-          weight: 'normal',
-          family: "'Inter', sans-serif"
-        },
-        bodyFont: {
-          size: 12,
-          family: "'Inter', sans-serif"
-        },
-        cornerRadius: 4,
-      },
-    },
-    scales: {
-      x: {
-        grid: {
-          display: false,
-        },
-        ticks: {
-          color: '#9CA3AF',
-          font: {
-            size: 10,
-            family: "'Inter', sans-serif"
-          }
-        },
-      },
-      y: {
-        beginAtZero: true,
-        grid: {
-          color: '#F3F4F6',
-        },
-        ticks: {
-          color: '#9CA3AF',
-          font: {
-            size: 10,
-            family: "'Inter', sans-serif"
-          }
-        },
-      },
-    },
-    interaction: {
-      mode: 'nearest',
-      axis: 'x',
-      intersect: false,
-    },
-    elements: {
-      line: {
-        borderJoinStyle: 'miter',
-        capBezierPoints: false,
-      },
-    },
-  };
   
   const handleTimeRangeChange = (range: TimeRange) => {
     setTimeRange(range);

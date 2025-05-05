@@ -34,7 +34,6 @@ const EnergySavingsMetrics: React.FC = () => {
         const now = Date.now();
         
         if (cacheEntry && now - cacheEntry.timestamp < CACHE_EXPIRATION) {
-          console.log("Using cached data for:", cacheKey);
           setMetrics(cacheEntry.data);
           setLoading(false);
           return;
@@ -42,7 +41,6 @@ const EnergySavingsMetrics: React.FC = () => {
         
         const url = `https://api.eia.gov/v2/electricity/state-electricity-profiles/energy-efficiency/data/?frequency=annual&data[0]=energy-savings&facets[state][]=${state}&facets[sector][]=IND&facets[sector][]=RES&facets[sector][]=TOT&start=${prevYear}&end=${year}&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000&api_key=${apiKey}`;
         
-        console.log("Fetching fresh data for:", cacheKey);
         const response = await fetch(url);
         
         if (!response.ok) {

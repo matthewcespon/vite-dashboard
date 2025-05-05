@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { AuthResponse, LoginRequest, RegisterRequest } from '../types';
-import { authService } from '../services/auth';
+import React, { createContext, useState, useEffect, ReactNode } from "react";
+import { AuthResponse, LoginRequest, RegisterRequest } from "../types";
+import { authService } from "../services/auth";
 
 interface AuthContextType {
   user: AuthResponse | null;
@@ -32,7 +32,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -45,9 +45,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setError(null);
       const response = await authService.login(credentials);
       setUser(response);
-      localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem("user", JSON.stringify(response));
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to login';
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to login";
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -61,9 +62,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setError(null);
       const response = await authService.register(userData);
       setUser(response);
-      localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem("user", JSON.stringify(response));
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to register';
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to register";
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {

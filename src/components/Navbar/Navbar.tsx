@@ -54,14 +54,6 @@ const Navbar: React.FC = () => {
               Reports
             </Link>
             <Link
-              to="/insights"
-              className={styles.navLink}
-              onClick={handleNavLinkClick}
-              prefetch="intent"
-            >
-              Insights
-            </Link>
-            <Link
               to="/dashboard"
               className={styles.signupButton}
               onClick={handleNavLinkClick}

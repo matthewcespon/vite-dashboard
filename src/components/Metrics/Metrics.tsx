@@ -2,16 +2,7 @@ import React from 'react';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import { Skeleton } from '@mui/joy';
 import styles from './Metrics.module.css';
-
-interface MetricData {
-  name: string;
-  value: string;
-  change: {
-    value: string;
-    isPositive: boolean;
-    icon?: React.ReactNode;
-  };
-}
+import { MetricData } from '../../types/metrics';
 
 interface MetricsProps {
   metrics: MetricData[];
