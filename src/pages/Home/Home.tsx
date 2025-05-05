@@ -22,7 +22,7 @@ const Home: React.FC = () => {
     } else {
       navigate("/login");
     }
-  };
+  }
   return (
     <div className={`${layoutStyles.flexCol} ${layoutStyles.minHScreen}`}>
       {/* <Navbar /> */}
