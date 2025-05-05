@@ -2,6 +2,8 @@
 
 A modern, responsive dashboard for monitoring and analyzing data built with **React, TypeScript, and Vite.**
 
+![image](https://github.com/user-attachments/assets/c6abb321-9bf7-4c14-af0a-e68c54e6b9f8)
+
 If you havent already please check it out, login details provided in login tooltip
 https://vite-dashboard-weld.vercel.app
 
