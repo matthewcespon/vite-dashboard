@@ -11,7 +11,7 @@ import {
   Legend,
   ChartOptions
 } from 'chart.js';
-import { Button } from '@mui/joy';
+import Button from '../Button/Button';
 import styles from './EnergyChart.module.css';
 
 ChartJS.register(
@@ -198,33 +198,25 @@ const EnergyChart: React.FC<EnergyChartProps> = ({ title = 'Energy Consumption T
         <div className={styles.title}>{title}</div>
         <div className={styles.filterContainer}>
           <Button 
-            variant={timeRange === '7d' ? 'solid' : 'plain'} 
-            color={timeRange === '7d' ? 'primary' : 'neutral'} 
-            size="sm" 
+            variant={timeRange === '7d' ? 'primary' : 'text'} 
             onClick={() => handleTimeRangeChange('7d')}
           >
             7 Days
           </Button>
           <Button 
-            variant={timeRange === '30d' ? 'solid' : 'plain'} 
-            color={timeRange === '30d' ? 'primary' : 'neutral'} 
-            size="sm" 
+            variant={timeRange === '30d' ? 'primary' : 'text'} 
             onClick={() => handleTimeRangeChange('30d')}
           >
             30 Days
           </Button>
           <Button 
-            variant={timeRange === '90d' ? 'solid' : 'plain'} 
-            color={timeRange === '90d' ? 'primary' : 'neutral'} 
-            size="sm" 
+            variant={timeRange === '90d' ? 'primary' : 'text'} 
             onClick={() => handleTimeRangeChange('90d')}
           >
             90 Days
           </Button>
           <Button 
-            variant={timeRange === '1y' ? 'solid' : 'plain'} 
-            color={timeRange === '1y' ? 'primary' : 'neutral'} 
-            size="sm" 
+            variant={timeRange === '1y' ? 'primary' : 'text'} 
             onClick={() => handleTimeRangeChange('1y')}
           >
             1 Year

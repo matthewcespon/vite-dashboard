@@ -18,12 +18,14 @@
 .paginationButton {
   font-weight: 500;
   padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
-  background-color: white;
-  border-radius: 0.375rem;
+  /* border: 1px solid #d1d5db; */
+  border: none;
+  border-radius: 4px;
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s;
+  background-color: #e0f2fe;
+  color: #0369a1;
 }
 
 .paginationButton:disabled {
@@ -32,13 +34,16 @@
 }
 
 .activeButton {
-  background-color: var(--blue-600, #3E92CC);
+  background-color: #f6f6f6;
+  color: #4c4c4c;
+  /* background-color: var(--blue-600, #3E92CC); */
   border-color: var(--blue-600, #3E92CC);
-  color: white;
+  /* color: white; */
 }
 
 .paginationButton:hover:not(:disabled):not(.activeButton) {
   background-color: #f3f4f6;
+  color: #a1a1a1;
 }
 
 @media (max-width: 767px) {

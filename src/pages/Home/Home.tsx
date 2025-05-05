@@ -48,7 +48,6 @@ const Home: React.FC = () => {
                   </p>
               <div className={heroStyles.heroButtons}>
                   <Button
-                    className={styles.primaryButton}
                     onClick={handleGetStarted}
                   >
                     Get Started

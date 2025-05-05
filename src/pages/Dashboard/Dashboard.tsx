@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FileText, Download, Eye } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import Banner from '../../components/Banner/Banner';
-import Button from '../../components/Button/Button';
 import EnergySavingsMetrics from '../../components/EnergySavingsMetrics/EnergySavingsMetrics';
 import EnergyChart from '../../components/EnergyChart/EnergyChart';
+import RecentReports from '../../components/RecentReports/RecentReports';
 import styles from './Dashboard.module.css';
 import Footer from '../../components/Footer/Footer';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('all');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   
   
@@ -43,69 +41,6 @@ const Dashboard: React.FC = () => {
     return null; // Redirect will happen in useEffect
   }
 
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(date);
-  };
-
-  const getDummyReports = () => {
-    const reports = [
-      {
-        id: 1,
-        title: 'Monthly Energy Consumption',
-        date: '2025-03-15',
-        type: 'electricity',
-        status: 'completed',
-      },
-      {
-        id: 2,
-        title: 'Quarterly Efficiency Analysis',
-        date: '2025-02-28',
-        type: 'gas',
-        status: 'completed',
-      },
-      {
-        id: 3,
-        title: 'Annual Sustainability Report',
-        date: '2025-01-10',
-        type: 'water',
-        status: 'completed',
-      },
-      {
-        id: 4,
-        title: 'Carbon Footprint Assessment',
-        date: '2025-03-01',
-        type: 'electricity',
-        status: 'completed',
-      },
-    ];
-
-    if (activeTab !== 'all') {
-      return reports.filter(report => report.type === activeTab);
-    }
-
-    return reports;
-  };
-
-  const reports = getDummyReports();
-
-  const getReportTypeClass = (type: string): string => {
-    switch (type) {
-      case 'electricity':
-        return styles.reportTypeElectricity;
-      case 'gas':
-        return styles.reportTypeGas;
-      case 'water':
-        return styles.reportTypeWater;
-      default:
-        return '';
-    }
-  };
-
   return (
     <div className={styles.container}>
       {showSuccessMessage && (
@@ -130,82 +65,7 @@ const Dashboard: React.FC = () => {
           <EnergyChart title="Energy Consumption Trends" />
         </div>
         
-        <div>
-          <h2 className={styles.sectionTitle}>Recent Reports</h2>
-          <div className={styles.tabs}>
-            <div 
-              className={`${styles.tab} ${activeTab === 'all' ? styles.tabActive : ''}`}
-              onClick={() => setActiveTab('all')}
-            >
-              All Reports
-            </div>
-            <div 
-              className={`${styles.tab} ${activeTab === 'electricity' ? styles.tabActive : ''}`}
-              onClick={() => setActiveTab('electricity')}
-            >
-              Electricity
-            </div>
-            <div 
-              className={`${styles.tab} ${activeTab === 'gas' ? styles.tabActive : ''}`}
-              onClick={() => setActiveTab('gas')}
-            >
-              Gas
-            </div>
-            <div 
-              className={`${styles.tab} ${activeTab === 'water' ? styles.tabActive : ''}`}
-              onClick={() => setActiveTab('water')}
-            >
-              Water
-            </div>
-          </div>
-          
-          {reports.length > 0 ? (
-            <div className={styles.reportGrid}>
-              {reports.map(report => (
-                <div key={report.id} className={styles.reportCard}>
-                  <div className={styles.reportHeader}>
-                    <div>
-                      <h3 className={styles.reportTitle}>{report.title}</h3>
-                      <span className={styles.reportDate}>{formatDate(report.date)}</span>
-                      <div className={`${styles.reportType} ${getReportTypeClass(report.type)}`}>
-                        {report.type.charAt(0).toUpperCase() + report.type.slice(1)}
-                      </div>
-                    </div>
-                    <FileText size={20} color="#6B7280" />
-                  </div>
-                  
-                  <div className={styles.reportActions}>
-                    <Button 
-                      variant="text" 
-                      size="small"
-                      icon={<Eye size={16} />}
-                    >
-                      View
-                    </Button>
-                    <Button 
-                      variant="text" 
-                      size="small"
-                      icon={<Download size={16} />}
-                    >
-                      Download
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className={styles.emptyState}>
-              <div className={styles.emptyStateIcon}>
-                <FileText size={48} />
-              </div>
-              <h3 className={styles.emptyStateText}>No reports found</h3>
-              <p className={styles.emptyStateSubtext}>
-                There are no reports available for the selected filter. Try selecting a different category or create a new report.
-              </p>
-              <Button>Generate New Report</Button>
-            </div>
-          )}
-        </div>
+        <RecentReports />
       </div>
       <Footer />
     </div>

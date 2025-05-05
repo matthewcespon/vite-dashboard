@@ -551,7 +551,7 @@ const TabContent: React.FC<TabContentProps> = ({ reportDetail }) => {
               <td>{report.description}</td>
             </tr>
             <tr>
-              <th>State</th>
+              <th>Status</th>
               <td>
                 <Status status={report.state} />
               </td>
