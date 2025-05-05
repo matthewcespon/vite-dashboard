@@ -29,6 +29,10 @@
   font-weight: 600;
   color: #374151;
 }
+.table tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
 .eyeButton {
   background-color: #e0f2fe;
   color: #57b0e0a9;
