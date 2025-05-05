@@ -197,30 +197,20 @@ const EnergyChart: React.FC<EnergyChartProps> = ({ title = 'Energy Consumption T
       <div className={styles.header}>
         <div className={styles.title}>{title}</div>
         <div className={styles.filterContainer}>
-          <Button 
-            variant={timeRange === '7d' ? 'primary' : 'text'} 
-            onClick={() => handleTimeRangeChange('7d')}
-          >
-            7 Days
-          </Button>
-          <Button 
-            variant={timeRange === '30d' ? 'primary' : 'text'} 
-            onClick={() => handleTimeRangeChange('30d')}
-          >
-            30 Days
-          </Button>
-          <Button 
-            variant={timeRange === '90d' ? 'primary' : 'text'} 
-            onClick={() => handleTimeRangeChange('90d')}
-          >
-            90 Days
-          </Button>
-          <Button 
-            variant={timeRange === '1y' ? 'primary' : 'text'} 
-            onClick={() => handleTimeRangeChange('1y')}
-          >
-            1 Year
-          </Button>
+            {[
+            { value: '7d', label: '7 Days' },
+            { value: '30d', label: '30 Days' },
+            { value: '90d', label: '90 Days' },
+            { value: '1y', label: '1 Year' },
+            ].map((range) => (
+            <Button
+              key={range.value}
+              variant={timeRange === range.value ? 'primary' : 'text'}
+              onClick={() => handleTimeRangeChange(range.value as TimeRange)}
+            >
+              {range.label}
+            </Button>
+            ))}
         </div>
       </div>
       
