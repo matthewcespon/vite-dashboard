@@ -4,7 +4,6 @@ import { Zap, Menu, X } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import styles from "./Navbar.module.css";
 import Button from "../Button/Button";
-// import styles from './navbar2.module.css';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,7 +25,7 @@ const Navbar: React.FC = () => {
 
   return (
     <header className={`${styles.navbar} `}>
-      <Link to="/" className={styles.logo}>
+      <Link to="/" className={styles.logo} prefetch="render">
         <Zap className={styles.logoIcon} size={24} />
         <span>EnergyInsight</span>
       </Link>
@@ -36,7 +35,12 @@ const Navbar: React.FC = () => {
       </button>
 
       <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}>
-        <Link to="/" className={styles.navLink} onClick={handleNavLinkClick}>
+        <Link 
+          to="/" 
+          className={styles.navLink} 
+          onClick={handleNavLinkClick}
+          prefetch="render"
+        >
           Home
         </Link>
         {user ? (
@@ -45,6 +49,7 @@ const Navbar: React.FC = () => {
               to="/reports"
               className={styles.navLink}
               onClick={handleNavLinkClick}
+              prefetch="intent"
             >
               Reports
             </Link>
@@ -52,6 +57,7 @@ const Navbar: React.FC = () => {
               to="/insights"
               className={styles.navLink}
               onClick={handleNavLinkClick}
+              prefetch="intent"
             >
               Insights
             </Link>
@@ -59,6 +65,7 @@ const Navbar: React.FC = () => {
               to="/dashboard"
               className={styles.signupButton}
               onClick={handleNavLinkClick}
+              prefetch="intent"
             >
               Dashboard
             </Link>
@@ -73,6 +80,7 @@ const Navbar: React.FC = () => {
               to="/login"
               className={styles.loginButton}
               onClick={handleNavLinkClick}
+              prefetch="intent"
             >
               Login
             </Link>
@@ -80,6 +88,7 @@ const Navbar: React.FC = () => {
               to="/register"
               className={styles.signupButton}
               onClick={handleNavLinkClick}
+              prefetch="intent"
             >
               Sign Up
             </Link>
