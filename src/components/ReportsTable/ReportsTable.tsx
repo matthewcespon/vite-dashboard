@@ -41,10 +41,37 @@ const ReportsTable: React.FC<ReportsTableProps> = ({
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [loadingReportIds, setLoadingReportIds] = useState<string[]>([]);
+  const [prefetchingReportIds, setPrefetchingReportIds] = useState<string[]>([]);
   const [modalError, setModalError] = useState<string | null>(null);
   const [reportDetail, setReportDetail] = useState<DetailedReport | null>(null);
+  const [prefetchedReports, setPrefetchedReports] = useState<Record<string, DetailedReport>>({});
+
+  const prefetchReport = async (id: string) => {
+    if (prefetchedReports[id] || prefetchingReportIds.includes(id) || loadingReportIds.includes(id)) {
+      return;
+    }
+
+    setPrefetchingReportIds((prev) => [...prev, id]);
+    
+    try {
+      const { data } = await api.get<DetailedReport>(`/api/reports/${id}`);
+      setPrefetchedReports((prev) => ({
+        ...prev,
+        [id]: data
+      }));
+    } catch (err) {
+    } finally {
+      setPrefetchingReportIds((prev) => prev.filter((reportId) => reportId !== id));
+    }
+  };
 
   const handleView = async (id: string) => {
+    if (prefetchedReports[id]) {
+      setReportDetail(prefetchedReports[id]);
+      setModalOpen(true);
+      return;
+    }
+
     setLoadingReportIds((prev) => [...prev, id]);
     setModalError(null);
 
@@ -102,6 +129,7 @@ const ReportsTable: React.FC<ReportsTableProps> = ({
                     <button
                       className={styles.eyeButton}
                       onClick={() => handleView(report.id)}
+                      onMouseEnter={() => prefetchReport(report.id)}
                       title="View Report"
                       disabled={loadingReportIds.includes(report.id)}
                     >
