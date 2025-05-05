@@ -19,7 +19,6 @@ interface MetricsProps {
 }
 
 const Metrics: React.FC<MetricsProps> = ({ metrics, isLoading = false }) => {
-  // Skeleton placeholder cards
   const renderSkeletonCards = () => {
     return Array(3).fill(0).map((_, index) => (
       <div key={`skeleton-${index}`} className={styles.metricCard}>
@@ -30,7 +29,6 @@ const Metrics: React.FC<MetricsProps> = ({ metrics, isLoading = false }) => {
     ));
   };
 
-  // No data message
   const renderEmptyState = () => {
     return (
       <div className={styles.emptyState}>

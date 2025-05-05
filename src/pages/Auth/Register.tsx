@@ -56,7 +56,6 @@ const Register: React.FC = () => {
       await register({ name, email, password });
       setRegisterSuccess(true);
       
-      // Redirect to dashboard after successful registration
       setTimeout(() => {
         navigate('/dashboard');
       }, 1500);

@@ -7,7 +7,6 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-// Add a request interceptor to include the token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -19,10 +18,8 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Add a response interceptor to handle token from response
 api.interceptors.response.use(
   (response) => {
-    // If token is in response, store it
     if (response.data?.token) {
       localStorage.setItem('token', response.data.token);
     }

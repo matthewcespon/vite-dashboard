@@ -11,7 +11,6 @@ import Reports from './pages/Reports/Reports';
 import NotFound from './pages/NotFound/NotFound';
 import './index.css';
 
-// Protected route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading } = useAuth();
   
