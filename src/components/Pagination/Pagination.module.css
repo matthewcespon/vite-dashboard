@@ -30,6 +30,8 @@
 
 .paginationButton:disabled {
   opacity: 0.5;
+  background-color: #fef3c7;
+  color: #92400e;
   cursor: not-allowed;
 }
 
