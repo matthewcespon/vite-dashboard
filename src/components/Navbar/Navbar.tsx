@@ -35,9 +35,9 @@ const Navbar: React.FC = () => {
       </button>
 
       <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}>
-        <Link 
-          to="/" 
-          className={styles.navLink} 
+        <Link
+          to="/"
+          className={styles.navLink}
           onClick={handleNavLinkClick}
           prefetch="render"
         >
@@ -52,6 +52,14 @@ const Navbar: React.FC = () => {
               prefetch="intent"
             >
               Reports
+            </Link>
+            <Link
+              to="/energy"
+              className={styles.navLink}
+              onClick={handleNavLinkClick}
+              prefetch="intent"
+            >
+              Energy
             </Link>
             <Link
               to="/dashboard"
