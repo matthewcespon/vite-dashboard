@@ -45,6 +45,7 @@ const ReportsTable: React.FC<ReportsTableProps> = ({
         [id]: data
       }));
     } catch (err) {
+      // Silent fail for prefetch
     } finally {
       setPrefetchingReportIds((prev) => prev.filter((reportId) => reportId !== id));
     }
@@ -71,65 +72,81 @@ const ReportsTable: React.FC<ReportsTableProps> = ({
     }
   };
 
-  return (
-    <div className={styles.reportsTableWrapper}>
-      {isLoading ? (
-        <div className={styles.loading}>Loading reports...</div>
-      ) : error ? (
-        <div className={styles.errorMessage}>{error}</div>
-      ) : reports.length > 0 ? (
-        <div className={styles.reportsTable}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Location</th>
-                <th>Creator</th>
-                <th>View</th>
-              </tr>
-            </thead>
-            <tbody>
-              {reports.map((report) => (
-                <tr key={report.id}>
-                  <td>{report.title}</td>
-                  <td>{report.description.substring(0, 50)}...</td>
-                  <td>
-                    <Status status={report.status} />
-                  </td>
-                  <td>{formatDate(report.date)}</td>
-                  <td>{report.location}</td>
-                  <td>{report.creator}</td>
-                  <td>
-                    <button
-                      className={styles.eyeButton}
-                      onClick={() => handleView(report.id)}
-                      onMouseEnter={() => prefetchReport(report.id)}
-                      title="View Report"
-                      disabled={loadingReportIds.includes(report.id)}
-                    >
-                      {loadingReportIds.includes(report.id) ? (
-                        <LoaderIcon
-                          size={18}
-                          className={styles.spinningLoader}
-                        />
-                      ) : (
-                        <Eye size={18} />
-                      )}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loadingContainer}>
+          <LoaderIcon className={styles.loadingIcon} />
+          <span>Loading reports...</span>
         </div>
-      ) : (
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.error}>
+          <p>Error loading reports: {error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!reports || reports.length === 0) {
+    return (
+      <div className={styles.container}>
         <div className={styles.emptyState}>
           No reports found. Create your first report to get started.
         </div>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.tableHeader}>
+        <div className={styles.headerCell}>Title</div>
+        <div className={styles.headerCell}>Description</div>
+        <div className={styles.headerCell}>Status</div>
+        <div className={styles.headerCell}>Date</div>
+        <div className={styles.headerCell}>Location</div>
+        <div className={styles.headerCell}>Creator</div>
+        <div className={styles.headerCell}>View</div>
+      </div>
+      
+      <div className={styles.tableBody}>
+        {reports.map((report) => (
+          <div key={report.id} className={styles.row}>
+            <div className={styles.cell} title={report.title}>{report.title}</div>
+            <div className={styles.cell} title={report.description}>
+              {report.description.substring(0, 50)}...
+            </div>
+            <div className={styles.cell}>
+              <Status status={report.status} />
+            </div>
+            <div className={styles.cell}>{formatDate(report.date)}</div>
+            <div className={styles.cell}>{report.location}</div>
+            <div className={styles.cell}>{report.creator}</div>
+            <div className={styles.cell}>
+              <button
+                className={styles.eyeButton}
+                onClick={() => handleView(report.id)}
+                onMouseEnter={() => prefetchReport(report.id)}
+                title="View Report"
+                disabled={loadingReportIds.includes(report.id)}
+              >
+                {loadingReportIds.includes(report.id) ? (
+                  <LoaderIcon size={18} className={styles.spinningLoader} />
+                ) : (
+                  <Eye size={18} />
+                )}
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
         {modalError ? (
           <div className={styles.errorMessage}>{modalError}</div>
